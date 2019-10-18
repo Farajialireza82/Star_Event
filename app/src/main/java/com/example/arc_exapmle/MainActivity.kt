@@ -3,6 +3,7 @@ package com.example.arc_exapmle
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,14 +16,10 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.arc_exapmle.AddNoteActivity.EXTRA_NOTE
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
-
-    public val EXTRA_TITLE = "com.example.arc_exapmle.EXTRA_TITLE"
-    public val EXTRA_Description = "com.example.arc_exapmle.EXTRA_DESCRIPTION"
-    public val EXTRA_PRIORITY = "com.example.arc_exapmle.EXTRA_PRIORITY"
-
 
     private lateinit var noteViewModel: NoteViewModel
     lateinit var recyclerView: RecyclerView
@@ -88,15 +85,17 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            var title = data?.getStringExtra(EXTRA_TITLE)
-            var description = data?.getStringExtra(EXTRA_Description)
-            var priority = data?.getIntExtra(EXTRA_PRIORITY, 1)
+            val mNote = data?.getParcelableExtra<Note>(EXTRA_NOTE)
 
+            if (mNote != null) {
+                noteViewModel.insert(mNote)
+                Toast.makeText(this , "NoteSaved" , Toast.LENGTH_SHORT).show()
 
-            var note = Note(title , description , priority)
-            noteViewModel.insert(note)
+            }else{
+                Log.i("MainActivity" , "onActivityResult: mNote is null")
+                Toast.makeText(baseContext , "mNote is null" , Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(this , "NoteSaved" , Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
