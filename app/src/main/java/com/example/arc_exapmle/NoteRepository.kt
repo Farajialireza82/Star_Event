@@ -43,11 +43,11 @@ class NoteRepository(application: Application) {
         return allNotes
     }
 
-    private class InsertNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Note, Void, Void>() {
+    private class InsertNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Note, Unit, Unit>() {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: Note?): Void? {
+        override fun doInBackground(vararg params: Note?): Unit? {
 
 
             noteDao.insert(params[0])
@@ -57,11 +57,11 @@ class NoteRepository(application: Application) {
         }
     }
 
-    private class UpdateNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Note, Void, Void>() {
+    private class UpdateNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Note, Unit, Unit>() {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: Note?): Void? {
+        override fun doInBackground(vararg params: Note?): Unit? {
 
             noteDao.update(params[0])
 
@@ -70,11 +70,11 @@ class NoteRepository(application: Application) {
         }
     }
 
-    private class DeleteAllNotesAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Note, Void, Void>() {
+    private class DeleteAllNotesAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Note, Unit, Unit>() {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: Note?): Void? {
+        override fun doInBackground(vararg params: Note?): Unit? {
 
 
             noteDao.deleteAll()
@@ -84,11 +84,11 @@ class NoteRepository(application: Application) {
         }
     }
 
-    private class DeleteNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Note, Void, Void>() {
+    private class DeleteNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Note, Unit, Unit>() {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: Note?): Void? {
+        override fun doInBackground(vararg params: Note?): Unit? {
 
             noteDao.delete(params[0])
 
