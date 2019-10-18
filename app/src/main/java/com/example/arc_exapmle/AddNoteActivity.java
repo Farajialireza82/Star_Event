@@ -15,6 +15,9 @@ import android.widget.NumberPicker;
 
 public class AddNoteActivity extends AppCompatActivity {
 
+    public static String EXTRA_NOTE = "com.example.arc_exapmle.EXTRA_NOTE";
+
+
     private EditText editTextTitle;
     private EditText editTextDescription;
     private NumberPicker numberPickerPriority;
@@ -45,6 +48,8 @@ public class AddNoteActivity extends AppCompatActivity {
         String description = editTextDescription.getText().toString();
         int priority = numberPickerPriority.getValue();
 
+
+
         if (title.trim().isEmpty()) {
 
             editTextTitle.setError("This field can not remain empty");
@@ -54,12 +59,12 @@ public class AddNoteActivity extends AppCompatActivity {
             editTextDescription.setError("This field can not remain empty");
             return;
         }
-        MainActivity mainActivity = new MainActivity();
 
+        Note note = new Note(title , description , priority);
+
+        
         Intent data = new Intent();
-        data.putExtra(mainActivity.getEXTRA_TITLE() , title);
-        data.putExtra(mainActivity.getEXTRA_Description() , description);
-        data.putExtra(mainActivity.getEXTRA_PRIORITY() , priority);
+        data.putExtra(EXTRA_NOTE, note);
 
         setResult(RESULT_OK , data);
         finish();
