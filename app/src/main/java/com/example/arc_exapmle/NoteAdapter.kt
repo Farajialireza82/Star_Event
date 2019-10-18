@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
-    private var notes: List<Note>? = ArrayList()
+    private var notes: List<NoteEntity>? = ArrayList()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
@@ -22,7 +22,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
     override fun onBindViewHolder(holder: NoteHolder, position: Int) {
 
-        val currentNote: Note? = notes?.get(position)
+        val currentNote: NoteEntity? = notes?.get(position)
 
         holder.textViewTitle.text = currentNote?.title
 
@@ -39,13 +39,13 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
     }
 
-    fun setNote(newNotes: List<Note>?) {
+    fun setNote(newNotes: List<NoteEntity>?) {
 
         notes = newNotes
         notifyDataSetChanged()
     }
 
-    fun getNoteAt(position: Int) : Note?{
+    fun getNoteAt(position: Int) : NoteEntity?{
 
         return notes?.get(position)
 

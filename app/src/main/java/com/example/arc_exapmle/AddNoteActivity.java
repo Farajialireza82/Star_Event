@@ -60,9 +60,9 @@ public class AddNoteActivity extends AppCompatActivity {
             return;
         }
 
-        Note note = new Note(title , description , priority);
+        NoteEntity note = new NoteEntity(title , description , priority);
 
-        
+
         Intent data = new Intent();
         data.putExtra(EXTRA_NOTE, note);
 

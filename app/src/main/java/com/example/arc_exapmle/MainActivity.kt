@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            val mNote = data?.getParcelableExtra<Note>(EXTRA_NOTE)
+            val mNote = data?.getParcelableExtra<NoteEntity>(EXTRA_NOTE)
 
             if (mNote != null) {
                 noteViewModel.insert(mNote)
