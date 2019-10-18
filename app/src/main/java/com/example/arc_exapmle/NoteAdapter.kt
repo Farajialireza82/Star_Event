@@ -13,7 +13,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
 
-        var itemView: View? = LayoutInflater.from(parent.context)
+        val itemView: View? = LayoutInflater.from(parent.context)
             .inflate(R.layout.note_item, parent, false)
 
         return NoteHolder(itemView)
@@ -24,11 +24,11 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
         val currentNote: Note? = notes?.get(position)
 
-        holder.textViewTitle.text = currentNote?.getTitle()
+        holder.textViewTitle.text = currentNote?.title
 
-        holder.textViewDescription.text = currentNote?.getDescription()
+        holder.textViewDescription.text = currentNote?.description
 
-        holder.textViewPriority.text = currentNote?.getPriority().toString()
+        holder.textViewPriority.text = currentNote?.priority.toString()
 
 
     }
