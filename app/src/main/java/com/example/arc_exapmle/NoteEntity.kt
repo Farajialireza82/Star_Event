@@ -6,11 +6,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "note_table")
-class Note(
+class NoteEntity(
      var title: String?,
      var description: String?,
      var priority: Int?
-) : Parcelable {
+) :  Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private var id = 0
@@ -44,12 +44,12 @@ class Note(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<Note> {
-        override fun createFromParcel(parcel: Parcel): Note {
-            return Note(parcel)
+    companion object CREATOR : Parcelable.Creator<NoteEntity> {
+        override fun createFromParcel(parcel: Parcel): NoteEntity {
+            return NoteEntity(parcel)
         }
 
-        override fun newArray(size: Int): Array<Note?> {
+        override fun newArray(size: Int): Array<NoteEntity?> {
             return arrayOfNulls(size)
         }
     }
