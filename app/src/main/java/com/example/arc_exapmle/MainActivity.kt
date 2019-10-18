@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         var buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note);
         buttonAddNote.setOnClickListener(View.OnClickListener {
 
-            val intent: Intent = Intent(this, AddNoteActivity::class.java)
+            val intent = Intent(this, AddNoteActivity::class.java)
             startActivityForResult(intent, 1)
 
         })
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        var adapter = NoteAdapter()
+        val adapter = NoteAdapter()
 
         recyclerView.adapter = adapter
 
@@ -50,7 +50,22 @@ class MainActivity : AppCompatActivity() {
 
         noteViewModel.getAllNotes().observe(
             this,
-            Observer { t -> adapter.setNote(t) }
+            Observer { t: List<NoteEntity>? ->
+
+                val noteUIList: MutableList<NoteUI> = ArrayList()
+
+
+
+                for (i in t!!.indices) {
+
+                    noteUIList.add(NoteUI(t[i]))
+
+                }
+
+                adapter.setNote(noteUIList)
+
+
+            }
 
         )
 
@@ -72,8 +87,8 @@ class MainActivity : AppCompatActivity() {
                 viewHolder: ViewHolder,
                 direction: Int
             ) {
-                adapter.getNoteAt(viewHolder.adapterPosition)?.let { noteViewModel.delete(it) }
-                Toast.makeText(applicationContext , "Note deleted " , Toast.LENGTH_SHORT).show()
+                adapter.getNoteAt(viewHolder.adapterPosition)?.let { noteViewModel.delete(NoteEntity(it.title , it.description , it.priority)) }
+                Toast.makeText(applicationContext, "Note deleted ", Toast.LENGTH_SHORT).show()
 
             }
         }).attachToRecyclerView(recyclerView)
@@ -89,11 +104,11 @@ class MainActivity : AppCompatActivity() {
 
             if (mNote != null) {
                 noteViewModel.insert(mNote)
-                Toast.makeText(this , "NoteSaved" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "NoteSaved", Toast.LENGTH_SHORT).show()
 
-            }else{
-                Log.i("MainActivity" , "onActivityResult: mNote is null")
-                Toast.makeText(baseContext , "mNote is null" , Toast.LENGTH_SHORT).show()
+            } else {
+                Log.i("MainActivity", "onActivityResult: mNote is null")
+                Toast.makeText(baseContext, "mNote is null", Toast.LENGTH_SHORT).show()
 
             }
         }
@@ -101,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         var menuInflater = menuInflater
-        menuInflater.inflate(R.menu.main_menu , menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
@@ -110,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.delete_all_notes -> {
                 noteViewModel.deleteAllNotes()
-                Toast.makeText(this , "All notes deleted" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "All notes deleted", Toast.LENGTH_SHORT).show()
 
             }
         }
