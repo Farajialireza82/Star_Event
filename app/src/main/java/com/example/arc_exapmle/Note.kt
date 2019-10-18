@@ -1,17 +1,27 @@
 package com.example.arc_exapmle
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "note_table")
 class Note(
-    private var title: String?,
-    private var description: String?,
-    private var priority: Int?
-) {
+     var title: String?,
+     var description: String?,
+     var priority: Int?
+) : Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private var id = 0
+
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int
+    ) {
+        id = parcel.readInt()
+    }
 
     fun setId(id : Int){
         this.id = id
@@ -22,19 +32,27 @@ class Note(
         return id
     }
 
-    fun getTitle(): String {
-        return title!!
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(title)
+        parcel.writeString(description)
+        parcel.writeValue(priority)
+        parcel.writeInt(id)
     }
 
-    fun getDescription(): String {
-        return description!!
+    override fun describeContents(): Int {
+        return 0
     }
 
+    companion object CREATOR : Parcelable.Creator<Note> {
+        override fun createFromParcel(parcel: Parcel): Note {
+            return Note(parcel)
+        }
 
-    fun getPriority(): Int? {
-        return priority
+        override fun newArray(size: Int): Array<Note?> {
+            return arrayOfNulls(size)
+        }
     }
-
 
 
 }
