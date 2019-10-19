@@ -86,7 +86,15 @@ class MainActivity : AppCompatActivity() {
                 viewHolder: ViewHolder,
                 direction: Int
             ) {
-                adapter.getNoteAt(viewHolder.adapterPosition)?.let { noteViewModel.delete(NoteEntity(it.title , it.description , it.priority)) }
+                adapter.getNoteAt(viewHolder.adapterPosition)?.let {
+                    noteViewModel.delete(
+                        NoteEntity(
+                            it.title,
+                            it.description,
+                            it.priority
+                        )
+                    )
+                }
                 Toast.makeText(applicationContext, "Note deleted ", Toast.LENGTH_SHORT).show()
 
             }
@@ -99,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            val mNote = data?.getParcelableExtra<NoteEntity>(AddNoteKtActivity.EXTRA_NOTE)
+            val mNote:NoteEntity = data?.getSerializableExtra(AddNoteKtActivity.EXTRA_NOTE) as NoteEntity
 
             if (mNote != null) {
                 noteViewModel.insert(mNote)
