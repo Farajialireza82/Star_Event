@@ -5,7 +5,7 @@ import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 
 class NoteRepository(application: Application) {
-    private var allNotes: LiveData<List<NoteEntity>?>
+    private var allNotes: LiveData<List<NoteEntity>>
     private var noteDao: NoteDao
 
     init {
@@ -39,7 +39,7 @@ class NoteRepository(application: Application) {
 
     }
 
-    fun getAllNotes(): LiveData<List<NoteEntity>?> {
+    fun getAllNotes(): LiveData<List<NoteEntity>> {
         return allNotes
     }
 
@@ -47,7 +47,7 @@ class NoteRepository(application: Application) {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: NoteEntity?): Unit? {
+        override fun doInBackground(vararg params: NoteEntity): Unit? {
 
 
             noteDao.insert(params[0])
@@ -61,7 +61,7 @@ class NoteRepository(application: Application) {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: NoteEntity?): Unit? {
+        override fun doInBackground(vararg params: NoteEntity): Unit? {
 
             noteDao.update(params[0])
 
@@ -88,7 +88,7 @@ class NoteRepository(application: Application) {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: NoteEntity?): Unit? {
+        override fun doInBackground(vararg params: NoteEntity): Unit? {
 
             noteDao.delete(params[0])
 

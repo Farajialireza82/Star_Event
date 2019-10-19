@@ -57,7 +57,9 @@ class MainActivity : AppCompatActivity() {
 
                 for (i in t!!.indices) {
 
-                    noteUIList.add(NoteUI(t[i]))
+                    val noteEntity = t[i]
+
+                    noteUIList.add(NoteUI(noteEntity.getId() , noteEntity.title , noteEntity.description , noteEntity.priority))
 
                 }
 
@@ -107,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            val mNote:NoteEntity = data?.getSerializableExtra(AddNoteKtActivity.EXTRA_NOTE) as NoteEntity
+            val mNote = data?.getSerializableExtra(AddNoteKtActivity.EXTRA_NOTE) as NoteEntity
 
             if (mNote != null) {
                 noteViewModel.insert(mNote)

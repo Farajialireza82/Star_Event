@@ -8,9 +8,9 @@ import java.io.Serializable
 
 @Entity(tableName = "note_table")
 class NoteEntity(
-     var title: String?,
-     var description: String?,
-     var priority: Int?
+     var title: String,
+     var description: String,
+     var priority: Int
 ) :  Serializable {
 
     @PrimaryKey(autoGenerate = true)
