@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.arc_exapmle.AddNoteActivity.EXTRA_NOTE
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         var buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note);
         buttonAddNote.setOnClickListener(View.OnClickListener {
 
-            val intent = Intent(this, AddNoteActivity::class.java)
+            val intent = Intent(this, AddNoteKtActivity::class.java)
             startActivityForResult(intent, 1)
 
         })
@@ -100,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            val mNote = data?.getParcelableExtra<NoteEntity>(EXTRA_NOTE)
+            val mNote = data?.getParcelableExtra<NoteEntity>(AddNoteKtActivity.EXTRA_NOTE)
 
             if (mNote != null) {
                 noteViewModel.insert(mNote)
