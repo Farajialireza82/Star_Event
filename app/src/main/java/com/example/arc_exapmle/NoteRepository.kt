@@ -15,19 +15,19 @@ class NoteRepository(application: Application) {
     }
 
 
-    fun insert(note: NoteEntity) {
+    fun insert(note: NoteUI) {
 
         InsertNoteAsyncTask(noteDao).execute(note)
 
     }
 
-    fun update(note: NoteEntity) {
+    fun update(note: NoteUI) {
 
         UpdateNoteAsyncTask(noteDao).execute(note)
 
     }
 
-    fun delete(note: NoteEntity) {
+    fun delete(note: NoteUI) {
 
         DeleteNoteAsyncTask(noteDao).execute(note)
 
@@ -40,42 +40,47 @@ class NoteRepository(application: Application) {
     }
 
     fun getAllNotes(): LiveData<List<NoteEntity>> {
+
         return allNotes
     }
 
-    private class InsertNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteEntity, Unit, Unit>() {
+    private class InsertNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: NoteEntity): Unit? {
+        override fun doInBackground(vararg params: NoteUI): Unit? {
 
+            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
+            noteEntity.setId(params[0].id)
 
-            noteDao.insert(params[0])
+            noteDao.insert(noteEntity)
 
             return null
 
         }
     }
 
-    private class UpdateNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteEntity, Unit, Unit>() {
+    private class UpdateNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: NoteEntity): Unit? {
+        override fun doInBackground(vararg params: NoteUI): Unit? {
 
-            noteDao.update(params[0])
+            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
+            noteEntity.setId(params[0].id)
+
+            noteDao.update(noteEntity)
 
             return null
 
         }
     }
 
-    private class DeleteAllNotesAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteEntity, Unit, Unit>() {
+    private class DeleteAllNotesAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Unit, Unit, Unit>() {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: NoteEntity?): Unit? {
-
+        override fun doInBackground(vararg params: Unit): Unit? {
 
             noteDao.deleteAll()
 
@@ -84,13 +89,16 @@ class NoteRepository(application: Application) {
         }
     }
 
-    private class DeleteNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteEntity, Unit, Unit>() {
+    private class DeleteNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
 
         private var noteDao: NoteDao = noteDaoNew
 
-        override fun doInBackground(vararg params: NoteEntity): Unit? {
+        override fun doInBackground(vararg params: NoteUI): Unit? {
 
-            noteDao.delete(params[0])
+            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
+            noteEntity.setId(params[0].id)
+
+            noteDao.update(noteEntity)
 
             return null
 
