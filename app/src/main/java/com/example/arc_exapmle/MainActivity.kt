@@ -59,7 +59,14 @@ class MainActivity : AppCompatActivity() {
 
                     val noteEntity = t[i]
 
-                    noteUIList.add(NoteUI(noteEntity.getId() , noteEntity.title , noteEntity.description , noteEntity.priority))
+                    noteUIList.add(
+                        NoteUI(
+                            noteEntity.getId(),
+                            noteEntity.title,
+                            noteEntity.description,
+                            noteEntity.priority
+                        )
+                    )
 
                 }
 
@@ -89,12 +96,16 @@ class MainActivity : AppCompatActivity() {
                 direction: Int
             ) {
                 adapter.getNoteAt(viewHolder.adapterPosition)?.let {
+
+                    val noteEntity = NoteEntity(
+                        it.title,
+                        it.description,
+                        it.priority
+                    )
+                    noteEntity.setId(it.id)
+
                     noteViewModel.delete(
-                        NoteEntity(
-                            it.title,
-                            it.description,
-                            it.priority
-                        )
+                        noteEntity
                     )
                 }
                 Toast.makeText(applicationContext, "Note deleted ", Toast.LENGTH_SHORT).show()
@@ -109,17 +120,16 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            val mNote = data?.getSerializableExtra(AddNoteKtActivity.EXTRA_NOTE) as NoteEntity
 
-            if (mNote != null) {
-                noteViewModel.insert(mNote)
-                Toast.makeText(this, "NoteSaved", Toast.LENGTH_SHORT).show()
+            val mNote = data?.getParcelableExtra(AddNoteKtActivity.EXTRA_NOTE) as NoteUI
 
-            } else {
-                Log.i("MainActivity", "onActivityResult: mNote is null")
-                Toast.makeText(baseContext, "mNote is null", Toast.LENGTH_SHORT).show()
+            val mNoteEntity = NoteEntity(mNote.title, mNote.description, mNote.priority)
 
-            }
+            mNoteEntity.setId(mNote.id)
+
+            noteViewModel.insert(mNoteEntity)
+            Toast.makeText(this, "NoteSaved", Toast.LENGTH_SHORT).show()
+
         }
     }
 
