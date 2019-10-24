@@ -12,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 
 class AddNoteKtActivity : AppCompatActivity() {
 
-    companion object{
+    companion object {
 
-        var EXTRA_NOTE = "com.example.arc_exapmle.EXTRA_NOTE"
+        const val EXTRA_NOTE = "com.example.arc_exapmle.EXTRA_NOTE"
+
 
     }
 
@@ -61,9 +62,10 @@ class AddNoteKtActivity : AppCompatActivity() {
 
         val note = NoteEntity(title, description, priority)
 
+
         val data = Intent()
 
-        data.putExtra(EXTRA_NOTE, note)
+        data.putExtra(EXTRA_NOTE, NoteUI(note.getId(), note.title, note.description, note.priority))
         setResult(Activity.RESULT_OK, data)
         finish()
     }
