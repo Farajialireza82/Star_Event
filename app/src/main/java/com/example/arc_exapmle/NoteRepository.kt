@@ -98,7 +98,7 @@ class NoteRepository(application: Application) {
             val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
             noteEntity.setId(params[0].id)
 
-            noteDao.update(noteEntity)
+            noteDao.delete(noteEntity)
 
             return null
 
