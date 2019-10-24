@@ -8,16 +8,16 @@ import java.io.Serializable
 
 @Entity(tableName = "note_table")
 class NoteEntity(
-     var title: String,
-     var description: String,
-     var priority: Int
-) :  Serializable {
+    var title: String,
+    var description: String,
+    var priority: Int
+) {
 
     @PrimaryKey(autoGenerate = true)
     private var id = 0
 
 
-    fun setId(id : Int){
+    fun setId(id: Int) {
         this.id = id
     }
 
@@ -25,4 +25,4 @@ class NoteEntity(
     fun getId(): Int {
         return id
     }
-    }
+}
