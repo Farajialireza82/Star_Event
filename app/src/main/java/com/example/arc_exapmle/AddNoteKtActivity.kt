@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 
 
 class AddNoteKtActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class AddNoteKtActivity : AppCompatActivity() {
     private var editTextTitle: EditText? = null
     private var editTextDescription: EditText? = null
     private var numberPickerPriority: NumberPicker? = null
+    private var clicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,32 +44,42 @@ class AddNoteKtActivity : AppCompatActivity() {
     }
 
     private fun saveNote() {
-        val title = editTextTitle!!.text.toString()
 
-        val description = editTextDescription!!.text.toString()
+        if(!clicked) {
 
-        val priority = numberPickerPriority!!.value
+            clicked = true
 
-        if (title.trim().isEmpty()) {
+            val title = editTextTitle!!.text.toString()
 
-            editTextTitle!!.error = "This field can not remain empty"
-            return
+            val description = editTextDescription!!.text.toString()
 
-        } else if (description.trim().isEmpty()) {
+            val priority = numberPickerPriority!!.value
 
-            editTextDescription!!.error = "This field can not remain empty"
-            return
+            if (title.trim().isEmpty()) {
 
+                editTextTitle!!.error = "This field can not remain empty"
+                return
+
+            } else if (description.trim().isEmpty()) {
+
+                editTextDescription!!.error = "This field can not remain empty"
+                return
+
+            }
+
+            val note = NoteEntity(title, description, priority)
+
+
+            val data = Intent()
+
+            val database = ViewModelProviders.of(this).get(NoteViewModel::class.java)
+
+            database.insert(note)
+
+            //data.putExtra(EXTRA_NOTE, NoteUI(note.getId(), note.title, note.description, note.priority))
+            setResult(Activity.RESULT_OK, data)
+            finish()
         }
-
-        val note = NoteEntity(title, description, priority)
-
-
-        val data = Intent()
-
-        data.putExtra(EXTRA_NOTE, NoteUI(note.getId(), note.title, note.description, note.priority))
-        setResult(Activity.RESULT_OK, data)
-        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
