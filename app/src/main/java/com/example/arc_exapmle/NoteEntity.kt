@@ -1,7 +1,5 @@
 package com.example.arc_exapmle
 
-import android.os.Parcel
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
@@ -10,8 +8,11 @@ import java.io.Serializable
 class NoteEntity(
     var title: String,
     var description: String,
-    var priority: Int, @PrimaryKey(autoGenerate = true) private var id: Int = 0
-) {
+    var priority: Int
+) : Serializable {
+
+    @PrimaryKey(autoGenerate = true)
+    private var id = 0
 
 
     fun setId(id: Int) {
