@@ -10,11 +10,8 @@ import java.io.Serializable
 class NoteEntity(
     var title: String,
     var description: String,
-    var priority: Int
+    var priority: Int, @PrimaryKey(autoGenerate = true) private var id: Int = 0
 ) {
-
-    @PrimaryKey(autoGenerate = true)
-    private var id = 0
 
 
     fun setId(id: Int) {
