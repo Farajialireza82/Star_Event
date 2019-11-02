@@ -3,10 +3,8 @@ package com.example.arc_exapmle
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -27,13 +25,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note);
-        buttonAddNote.setOnClickListener(View.OnClickListener {
+        var buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note)
+        buttonAddNote.setOnClickListener {
 
             val intent = Intent(this, AddNoteKtActivity::class.java)
             startActivityForResult(intent, 1)
 
-        })
+        }
 
 
 
@@ -119,17 +117,11 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        when {
+            requestCode == 1 && resultCode == Activity.RESULT_OK -> // noteViewModel.insert(mNoteEntity)
 
-            val mNote = data?.getParcelableExtra(AddNoteKtActivity.EXTRA_NOTE) as NoteUI
-
-            val mNoteEntity = NoteEntity(mNote.title, mNote.description, mNote.priority)
-
-            mNoteEntity.setId(mNote.id)
-
-            noteViewModel.insert(mNoteEntity)
-            Toast.makeText(this, "NoteSaved", Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(this, "NoteSaved", Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
         }
     }
 
