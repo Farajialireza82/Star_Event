@@ -77,7 +77,6 @@ class AddNoteKtActivity : AppCompatActivity() {
             database.insert(note)
 
             //data.putExtra(EXTRA_NOTE, NoteUI(note.getId(), note.title, note.description, note.priority))
-            setResult(Activity.RESULT_OK, data)
             finish()
         }
     }

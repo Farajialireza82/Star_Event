@@ -15,21 +15,21 @@ class NoteViewModel(application: Application) :
 
     fun insert(note: NoteEntity) {
 
-        val noteUI = NoteUI(note.getId() , note.title , note.description , note.priority)
+        val noteUI = NoteUI(note.getNoteId() , note.title , note.description , note.priority)
 
         repository.insert(noteUI)
     }
 
     fun delete(note: NoteEntity) {
 
-        val noteUI = NoteUI(note.getId() , note.title , note.description , note.priority)
+        val noteUI = NoteUI(note.getNoteId() , note.title , note.description , note.priority)
 
         repository.delete(noteUI)
     }
 
     fun update(note: NoteEntity) {
 
-        val noteUI = NoteUI(note.getId() , note.title , note.description , note.priority)
+        val noteUI = NoteUI(note.getNoteId() , note.title , note.description , note.priority)
 
         repository.update(noteUI)
     }

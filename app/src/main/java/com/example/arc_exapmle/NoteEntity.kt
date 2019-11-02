@@ -15,12 +15,12 @@ class NoteEntity(
     private var noteId = 0
 
 
-    fun setId(note_id: Int) {
+    fun setNoteId(note_id: Int) {
         this.noteId = note_id
     }
 
 
-    fun getId(): Int {
+    fun getNoteId(): Int {
         return noteId
     }
 }

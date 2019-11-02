@@ -51,7 +51,7 @@ class NoteRepository(application: Application) {
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
             val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
-            noteEntity.setId(params[0].id)
+            noteEntity.setNoteId(params[0].id)
 
             noteDao.insert(noteEntity)
 
@@ -67,7 +67,7 @@ class NoteRepository(application: Application) {
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
             val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
-            noteEntity.setId(params[0].id)
+            noteEntity.setNoteId(params[0].id)
 
             noteDao.update(noteEntity)
 
@@ -96,7 +96,7 @@ class NoteRepository(application: Application) {
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
             val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
-            noteEntity.setId(params[0].id)
+            noteEntity.setNoteId(params[0].id)
 
             noteDao.delete(noteEntity)
 
