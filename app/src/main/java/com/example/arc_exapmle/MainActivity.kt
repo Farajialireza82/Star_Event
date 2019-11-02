@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -19,11 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
-    public val EXTRA_TITLE = "com.example.arc_exapmle.EXTRA_TITLE"
-    public val EXTRA_Description = "com.example.arc_exapmle.EXTRA_DESCRIPTION"
-    public val EXTRA_PRIORITY = "com.example.arc_exapmle.EXTRA_PRIORITY"
-
-
     private lateinit var noteViewModel: NoteViewModel
     lateinit var recyclerView: RecyclerView
 
@@ -31,20 +25,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note);
-        buttonAddNote.setOnClickListener(View.OnClickListener {
+        var buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note)
+        buttonAddNote.setOnClickListener {
 
-            val intent: Intent = Intent(this, AddNoteActivity::class.java)
+            val intent = Intent(this, AddNoteKtActivity::class.java)
             startActivityForResult(intent, 1)
 
-        })
+        }
 
 
 
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        var adapter = NoteAdapter()
+        val adapter = NoteAdapter()
 
         recyclerView.adapter = adapter
 
@@ -53,7 +47,31 @@ class MainActivity : AppCompatActivity() {
 
         noteViewModel.getAllNotes().observe(
             this,
-            Observer { t -> adapter.setNote(t) }
+            Observer { t: List<NoteEntity>? ->
+
+                val noteUIList: MutableList<NoteUI> = ArrayList()
+
+
+
+                for (i in t!!.indices) {
+
+                    val noteEntity = t[i]
+
+                    noteUIList.add(
+                        NoteUI(
+                            noteEntity.getId(),
+                            noteEntity.title,
+                            noteEntity.description,
+                            noteEntity.priority
+                        )
+                    )
+
+                }
+
+                adapter.setNote(noteUIList)
+
+
+            }
 
         )
 
@@ -75,8 +93,20 @@ class MainActivity : AppCompatActivity() {
                 viewHolder: ViewHolder,
                 direction: Int
             ) {
-                adapter.getNoteAt(viewHolder.adapterPosition)?.let { noteViewModel.delete(it) }
-                Toast.makeText(applicationContext , "Note deleted " , Toast.LENGTH_SHORT).show()
+                adapter.getNoteAt(viewHolder.adapterPosition)?.let {
+
+                    val noteEntity = NoteEntity(
+                        it.title,
+                        it.description,
+                        it.priority
+                    )
+                    noteEntity.setId(it.id)
+
+                    noteViewModel.delete(
+                        noteEntity
+                    )
+                }
+                Toast.makeText(applicationContext, "Note deleted ", Toast.LENGTH_SHORT).show()
 
             }
         }).attachToRecyclerView(recyclerView)
@@ -87,22 +117,17 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            var title = data?.getStringExtra(EXTRA_TITLE)
-            var description = data?.getStringExtra(EXTRA_Description)
-            var priority = data?.getIntExtra(EXTRA_PRIORITY, 1)
+        when {
+            requestCode == 1 && resultCode == Activity.RESULT_OK -> // noteViewModel.insert(mNoteEntity)
 
-
-            var note = Note(title , description , priority)
-            noteViewModel.insert(note)
-
-            Toast.makeText(this , "NoteSaved" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "NoteSaved", Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         var menuInflater = menuInflater
-        menuInflater.inflate(R.menu.main_menu , menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
@@ -111,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.delete_all_notes -> {
                 noteViewModel.deleteAllNotes()
-                Toast.makeText(this , "All notes deleted" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "All notes deleted", Toast.LENGTH_SHORT).show()
 
             }
         }
