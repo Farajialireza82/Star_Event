@@ -1,4 +1,4 @@
-package com.example.arc_exapmle
+package com.example.arc_exapmle.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -14,8 +14,15 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.arc_exapmle.R
+import com.example.arc_exapmle.note.NoteAdapter
+import com.example.arc_exapmle.note.NoteEntity
+import com.example.arc_exapmle.note.NoteUI
+import com.example.arc_exapmle.note.NoteViewModel
+import com.example.arc_exapmle.user.UserUI
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var noteViewModel: NoteViewModel
@@ -25,11 +32,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note)
+        val intent: Intent = intent
+
+        val user : UserUI = intent.getParcelableExtra(LoginActivity.loginValue)
+
+
+        val buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note)
         buttonAddNote.setOnClickListener {
 
-            val intent = Intent(this, AddNoteKtActivity::class.java)
-            startActivityForResult(intent, 1)
+            val addIntent = Intent(this, AddNoteKtActivity::class.java)
+
+            addIntent.putExtra(LoginActivity.loginValue , user)
+
+            startActivityForResult(addIntent, 1)
 
         }
 
@@ -62,7 +77,8 @@ class MainActivity : AppCompatActivity() {
                             noteEntity.getNoteId(),
                             noteEntity.title,
                             noteEntity.description,
-                            noteEntity.priority
+                            noteEntity.priority,
+                            user.user_id
                         )
                     )
 
@@ -98,7 +114,8 @@ class MainActivity : AppCompatActivity() {
                     val noteEntity = NoteEntity(
                         it.title,
                         it.description,
-                        it.priority
+                        it.priority,
+                        it.userID
                     )
                     noteEntity.setNoteId(it.id)
 
@@ -126,7 +143,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        var menuInflater = menuInflater
+        val menuInflater = menuInflater
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
