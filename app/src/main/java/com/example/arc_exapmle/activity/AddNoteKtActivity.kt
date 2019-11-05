@@ -1,7 +1,5 @@
-package com.example.arc_exapmle
+package com.example.arc_exapmle.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +7,9 @@ import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.example.arc_exapmle.R
+import com.example.arc_exapmle.note.NoteEntity
+import com.example.arc_exapmle.note.NoteViewModel
 
 
 class AddNoteKtActivity : AppCompatActivity() {
@@ -24,10 +25,15 @@ class AddNoteKtActivity : AppCompatActivity() {
     private var editTextDescription: EditText? = null
     private var numberPickerPriority: NumberPicker? = null
     private var clicked = false
+    private lateinit var userId : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
+
+        val intent = intent
+
+        userId = intent.getStringExtra(LoginActivity.loginValue)
 
         editTextTitle = findViewById(R.id.edit_text_Title)
         editTextDescription = findViewById(R.id.edit_text_description)
@@ -67,16 +73,12 @@ class AddNoteKtActivity : AppCompatActivity() {
 
             }
 
-            val note = NoteEntity(title, description, priority)
-
-
-            val data = Intent()
+            val note = NoteEntity(title, description, priority , userId)
 
             val database = ViewModelProviders.of(this).get(NoteViewModel::class.java)
 
             database.insert(note)
 
-            //data.putExtra(EXTRA_NOTE, NoteUI(note.getId(), note.title, note.description, note.priority))
             finish()
         }
     }

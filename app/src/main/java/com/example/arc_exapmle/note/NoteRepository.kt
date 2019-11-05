@@ -1,17 +1,18 @@
-package com.example.arc_exapmle
+package com.example.arc_exapmle.note
 
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 
-class NoteRepository(application: Application) {
+class NoteRepository(application: Application , val id: String) {
     private var allNotes: LiveData<List<NoteEntity>>
     private var noteDao: NoteDao
 
     init {
-        val dataBase: NoteDatabase = NoteDatabase.getInstance(application)
+        val dataBase: NoteDatabase =
+            NoteDatabase.getInstance(application)
         noteDao = dataBase.noteDao()
-        allNotes = noteDao.getAllNotes()
+        allNotes = noteDao.getAllNotes(id)
     }
 
 
@@ -50,7 +51,12 @@ class NoteRepository(application: Application) {
 
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
-            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
+            val noteEntity = NoteEntity(
+                params[0].title,
+                params[0].description,
+                params[0].priority,
+                params[0].userID
+            )
             noteEntity.setNoteId(params[0].id)
 
             noteDao.insert(noteEntity)
@@ -66,7 +72,12 @@ class NoteRepository(application: Application) {
 
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
-            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
+            val noteEntity = NoteEntity(
+                params[0].title,
+                params[0].description,
+                params[0].priority,
+                params[0].userID
+            )
             noteEntity.setNoteId(params[0].id)
 
             noteDao.update(noteEntity)
@@ -95,7 +106,12 @@ class NoteRepository(application: Application) {
 
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
-            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
+            val noteEntity = NoteEntity(
+                params[0].title,
+                params[0].description,
+                params[0].priority,
+                params[0].userID
+            )
             noteEntity.setNoteId(params[0].id)
 
             noteDao.delete(noteEntity)
