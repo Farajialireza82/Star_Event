@@ -78,7 +78,7 @@ class UserRepository (application: Application){
 
         override fun doInBackground(vararg params: UserUI) : Unit? {
 
-            val userEntity = UserEntity(params[0].user_id)
+            val userEntity = UserEntity(params[0].username , params[0].user_id)
             userDao.insert(userEntity)
 
             return null
@@ -93,7 +93,7 @@ class UserRepository (application: Application){
 
         override fun doInBackground(vararg params: UserUI) : Unit? {
 
-            val userEntity = UserEntity(params[0].user_id)
+            val userEntity = UserEntity(params[0].username , params[0].user_id)
             userDao.delete(userEntity)
 
             return null
