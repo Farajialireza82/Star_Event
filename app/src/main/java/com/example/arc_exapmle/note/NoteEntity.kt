@@ -19,8 +19,8 @@ class NoteEntity(
     var title: String,
     var description: String,
     var priority: Int,
-    @ColumnInfo(name = "user_id")
-    var userId:String
+    @ColumnInfo(name = "user_id" )
+    var userId:Int
     ) : Serializable {
 
     @PrimaryKey(autoGenerate = true)
