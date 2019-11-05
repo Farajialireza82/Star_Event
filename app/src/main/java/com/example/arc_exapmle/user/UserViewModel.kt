@@ -18,7 +18,7 @@ class UserViewModel(application: Application) :
     fun insert(user: UserEntity) {
 
         val userUI = UserUI(
-            user.user_id
+            user.username , user.user_id
         )
 
         repository.newUser(userUI)
@@ -27,7 +27,7 @@ class UserViewModel(application: Application) :
     fun delete(user: UserEntity) {
 
         val userUI = UserUI(
-            user.user_id
+            user.username , user.user_id
         )
 
         repository.deleteUser(userUI)
