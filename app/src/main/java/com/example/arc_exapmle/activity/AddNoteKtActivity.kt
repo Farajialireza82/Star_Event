@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteViewModel
+import com.example.arc_exapmle.user.UserUI
 
 
 class AddNoteKtActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class AddNoteKtActivity : AppCompatActivity() {
     private var editTextDescription: EditText? = null
     private var numberPickerPriority: NumberPicker? = null
     private var clicked = false
-    private lateinit var userId : String
+    private lateinit var user: UserUI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,7 @@ class AddNoteKtActivity : AppCompatActivity() {
 
         val intent = intent
 
-        userId = intent.getStringExtra(LoginActivity.loginValue)
+        user = intent.getParcelableExtra(LoginActivity.loginValue )
 
         editTextTitle = findViewById(R.id.edit_text_Title)
         editTextDescription = findViewById(R.id.edit_text_description)
@@ -73,7 +74,7 @@ class AddNoteKtActivity : AppCompatActivity() {
 
             }
 
-            val note = NoteEntity(title, description, priority , userId)
+            val note = NoteEntity(title, description, priority , user.user_id)
 
             val database = ViewModelProviders.of(this).get(NoteViewModel::class.java)
 
