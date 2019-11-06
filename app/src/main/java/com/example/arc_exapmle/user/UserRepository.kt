@@ -13,7 +13,7 @@ class UserRepository (application: Application){
 
     init {
         val database : UserDatabase =
-            UserDatabase.getInctance(application)
+            UserDatabase.getInstance(application)
 
         userDao = database.userDao()
         allUsers = userDao.getAllUsers()
