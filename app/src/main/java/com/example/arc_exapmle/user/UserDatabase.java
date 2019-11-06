@@ -17,7 +17,7 @@ public abstract class UserDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
 
-    public static synchronized UserDatabase getInctance(Context context) {
+    public static synchronized UserDatabase getInstance(Context context) {
 
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext()
@@ -52,7 +52,7 @@ public abstract class UserDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            userDao.insert(new UserEntity("FarajiAlireza.8"));
+            userDao.insert(new UserEntity("FarajiAlireza.8" , 82));
 
 
             return null;
