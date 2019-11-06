@@ -24,6 +24,7 @@ class NoteEntity(
     ) : Serializable {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "note_id")
     private var noteId = 0
 
 
