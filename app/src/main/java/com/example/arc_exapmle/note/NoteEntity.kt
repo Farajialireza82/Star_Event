@@ -7,13 +7,13 @@ import androidx.room.PrimaryKey
 import com.example.arc_exapmle.user.UserEntity
 import java.io.Serializable
 
+/*
 @Entity(
     tableName = "note_table",
-    foreignKeys = [ForeignKey(
-        entity = UserEntity::class,
-        parentColumns = arrayOf("note_id"),
-        childColumns = arrayOf("user_id")
-    )]
+            foreignKeys = [ForeignKey(
+                entity = UserEntity::class,
+                parentColumns = arrayOf("id"),
+                childColumns = arrayOf("user_id"))]
 )
 class NoteEntity(
     var title: String,
@@ -27,13 +27,34 @@ class NoteEntity(
     @ColumnInfo(name = "note_id")
     private var noteId = 0
 
-
     fun setNoteId(note_id: Int) {
         this.noteId = note_id
     }
 
-
     fun getNoteId(): Int {
         return noteId
     }
+
+
 }
+*/
+
+@Entity(
+    tableName = "note_table",
+    foreignKeys = [ForeignKey(
+        entity = UserEntity::class,
+        parentColumns = arrayOf("user_id"),
+        childColumns = arrayOf("user")
+    )]
+)
+class NoteEntity(
+    var title: String,
+
+    var description: String,
+    var priority: Int,
+    @ColumnInfo(name = "user")
+    var userId: Int,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "note_id")
+    var noteId: Int = 0
+)
