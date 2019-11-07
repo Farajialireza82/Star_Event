@@ -16,7 +16,7 @@ class NoteViewModel(application: Application , val id: String) :
     fun insert(note: NoteEntity) {
 
         val noteUI = NoteUI(
-            note.getNoteId(),
+            note.noteId,
             note.title,
             note.description,
             note.priority,
@@ -29,7 +29,7 @@ class NoteViewModel(application: Application , val id: String) :
     fun delete(note: NoteEntity) {
 
         val noteUI = NoteUI(
-            note.getNoteId(),
+            note.noteId,
             note.title,
             note.description,
             note.priority,
@@ -42,7 +42,7 @@ class NoteViewModel(application: Application , val id: String) :
     fun update(note: NoteEntity) {
 
         val noteUI = NoteUI(
-            note.getNoteId(),
+            note.noteId,
             note.title,
             note.description,
             note.priority,
