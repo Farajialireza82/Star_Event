@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
                     noteUIList.add(
                         NoteUI(
-                            noteEntity.getNoteId(),
+                            noteEntity.noteId,
                             noteEntity.title,
                             noteEntity.description,
                             noteEntity.priority,
@@ -116,8 +116,8 @@ class MainActivity : AppCompatActivity() {
                         it.description,
                         it.priority,
                         it.userID
+                        ,it.id
                     )
-                    noteEntity.setNoteId(it.id)
 
                     noteViewModel.delete(
                         noteEntity
