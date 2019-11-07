@@ -55,9 +55,9 @@ class NoteRepository(application: Application , val id: String) {
                 params[0].title,
                 params[0].description,
                 params[0].priority,
-                params[0].userID
+                params[0].userID,
+                params[0].id
             )
-            noteEntity.setNoteId(params[0].id)
 
             noteDao.insert(noteEntity)
 
@@ -76,9 +76,9 @@ class NoteRepository(application: Application , val id: String) {
                 params[0].title,
                 params[0].description,
                 params[0].priority,
-                params[0].userID
+                params[0].userID,
+                params[0].id
             )
-            noteEntity.setNoteId(params[0].id)
 
             noteDao.update(noteEntity)
 
@@ -110,9 +110,9 @@ class NoteRepository(application: Application , val id: String) {
                 params[0].title,
                 params[0].description,
                 params[0].priority,
-                params[0].userID
+                params[0].userID,
+                params[0].id
             )
-            noteEntity.setNoteId(params[0].id)
 
             noteDao.delete(noteEntity)
 
