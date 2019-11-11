@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteViewModel
+import com.example.arc_exapmle.note.NoteViewModelFactory
 import com.example.arc_exapmle.user.UserUI
 
 
@@ -34,7 +35,7 @@ class AddNoteKtActivity : AppCompatActivity() {
 
         val intent = intent
 
-        user = intent.getParcelableExtra(LoginActivity.loginValue )
+        user = intent.getParcelableExtra(LoginActivity.loginValue)
 
         editTextTitle = findViewById(R.id.edit_text_Title)
         editTextDescription = findViewById(R.id.edit_text_description)
@@ -76,7 +77,7 @@ class AddNoteKtActivity : AppCompatActivity() {
 
             val note = NoteEntity(title, description, priority , user.user_id)
 
-            val database = ViewModelProviders.of(this).get(NoteViewModel::class.java)
+            val database = ViewModelProviders.of(this , NoteViewModelFactory(application , user.user_id)).get(NoteViewModel::class.java)
 
             database.insert(note)
 
