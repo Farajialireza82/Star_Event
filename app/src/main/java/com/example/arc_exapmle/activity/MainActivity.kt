@@ -1,10 +1,12 @@
 package com.example.arc_exapmle.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -15,10 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.arc_exapmle.R
-import com.example.arc_exapmle.note.NoteAdapter
-import com.example.arc_exapmle.note.NoteEntity
-import com.example.arc_exapmle.note.NoteUI
-import com.example.arc_exapmle.note.NoteViewModel
+import com.example.arc_exapmle.note.*
 import com.example.arc_exapmle.user.UserUI
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -27,7 +26,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var noteViewModel: NoteViewModel
     lateinit var recyclerView: RecyclerView
+    lateinit var welcomeTextView: TextView
 
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,6 +38,11 @@ class MainActivity : AppCompatActivity() {
 
         val user : UserUI = intent.getParcelableExtra(LoginActivity.loginValue)
 
+        noteViewModel = ViewModelProviders.of(this , NoteViewModelFactory(application , user.user_id) ).get(NoteViewModel::class.java)
+
+        welcomeTextView = findViewById(R.id.welcomeTextView)
+
+        welcomeTextView.text = "Welcome ${user.username}"
 
         val buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note)
         buttonAddNote.setOnClickListener {
@@ -58,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
 
-        noteViewModel = ViewModelProviders.of(this).get(NoteViewModel::class.java)
 
         noteViewModel.getAllNotes().observe(
             this,
