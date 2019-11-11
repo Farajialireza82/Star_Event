@@ -7,11 +7,24 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 
-@Entity(tableName = "user_table", indices = [Index("user_id")])
-class UserEntity(
+/*
+@Entity(tableName = "user_table",
+    indices = [Index("user_id")])
+data class UserEntity(
     var username:String,
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "user_id" )
+    @ColumnInfo(name = "user_id")
     var user_id: Int
-
-) : Serializable
+)*/
+@Entity(tableName = "user_table",
+    indices = [Index("user_id")])
+data class UserEntity(
+    var username:String,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "user_id")
+    var user_id: Int
+){
+    override fun toString(): String {
+        return "username = $username  , userId = $user_id"
+    }
+}
