@@ -38,7 +38,12 @@ class UserViewModel(application: Application) :
         repository.deleteAllUsers()
     }
 
-    fun getAllNotes(): LiveData<List<UserEntity>> {
+    fun getAllUsers(): LiveData<List<UserEntity>> {
         return repository.getAllUsers()
     }
+
+    fun findUserById(numericId:Int):List<UserEntity>{
+        return repository.findUserById(numericId)
+    }
+
 }
