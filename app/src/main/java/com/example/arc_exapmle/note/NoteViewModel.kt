@@ -3,10 +3,13 @@ package com.example.arc_exapmle.note
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import com.example.arc_exapmle.user.UserEntity
 
-class NoteViewModel(application: Application , val id: String) :
+
+class NoteViewModel(application: Application , val userId: Int) :
     AndroidViewModel(application) {
-    private var repository= NoteRepository(application , id)
+    private var repository= NoteRepository(application , userId)
     private val allNotes: LiveData<List<NoteEntity>>
 
     init {
@@ -59,6 +62,12 @@ class NoteViewModel(application: Application , val id: String) :
     fun getAllNotes(): LiveData<List<NoteEntity>> {
         return repository.getAllNotes()
     }
+
+     fun <T : ViewModel?> create(modelClass: Class<T>?): T {
+        return NoteViewModel(getApplication() , userId) as T
+    }
+
+
 
 
 }
