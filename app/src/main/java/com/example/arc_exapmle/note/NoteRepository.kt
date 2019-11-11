@@ -3,8 +3,9 @@ package com.example.arc_exapmle.note
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import com.example.arc_exapmle.user.UserEntity
 
-class NoteRepository(application: Application , val id: String) {
+class NoteRepository(application: Application , val userId : Int) {
     private var allNotes: LiveData<List<NoteEntity>>
     private var noteDao: NoteDao
 
@@ -12,7 +13,7 @@ class NoteRepository(application: Application , val id: String) {
         val dataBase: NoteDatabase =
             NoteDatabase.getInstance(application)
         noteDao = dataBase.noteDao()
-        allNotes = noteDao.getAllNotes(id)
+        allNotes = noteDao.getAllNotes(userId)
     }
 
 
@@ -41,6 +42,7 @@ class NoteRepository(application: Application , val id: String) {
     }
 
     fun getAllNotes(): LiveData<List<NoteEntity>> {
+
 
         return allNotes
     }
