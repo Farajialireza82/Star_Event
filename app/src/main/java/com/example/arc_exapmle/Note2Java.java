@@ -1,35 +1,15 @@
-/*
 package com.example.arc_exapmle;
 
+import android.content.Intent;
 
-import android.os.Bundle;
+import androidx.room.Entity;
+import androidx.room.Index;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
-import java.util.List;
-
-public class Note2Java extends AppCompatActivity {
+import com.example.arc_exapmle.activity.LoginActivity;
+import com.example.arc_exapmle.activity.MainActivity;
 
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        NoteViewModel viewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
-        viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-
-                List n = notes;
-
-            }
-        });
-
-
-    }
+@Entity( tableName = "user_table" , indices = {@Index("artist_id")})
+class  Note2Java{
 }
-*/
+

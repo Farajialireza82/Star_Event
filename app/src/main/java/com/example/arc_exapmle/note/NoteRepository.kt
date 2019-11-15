@@ -1,17 +1,19 @@
-package com.example.arc_exapmle
+package com.example.arc_exapmle.note
 
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import com.example.arc_exapmle.user.UserEntity
 
-class NoteRepository(application: Application) {
+class NoteRepository(application: Application , val userId : Int) {
     private var allNotes: LiveData<List<NoteEntity>>
     private var noteDao: NoteDao
 
     init {
-        val dataBase: NoteDatabase = NoteDatabase.getInstance(application)
+        val dataBase: NoteDatabase =
+            NoteDatabase.getInstance(application)
         noteDao = dataBase.noteDao()
-        allNotes = noteDao.getAllNotes()
+        allNotes = noteDao.getAllNotes(userId)
     }
 
 
@@ -41,6 +43,7 @@ class NoteRepository(application: Application) {
 
     fun getAllNotes(): LiveData<List<NoteEntity>> {
 
+
         return allNotes
     }
 
@@ -50,8 +53,13 @@ class NoteRepository(application: Application) {
 
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
-            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
-            noteEntity.setNoteId(params[0].id)
+            val noteEntity = NoteEntity(
+                params[0].title,
+                params[0].description,
+                params[0].priority,
+                params[0].userID,
+                params[0].id
+            )
 
             noteDao.insert(noteEntity)
 
@@ -66,8 +74,13 @@ class NoteRepository(application: Application) {
 
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
-            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
-            noteEntity.setNoteId(params[0].id)
+            val noteEntity = NoteEntity(
+                params[0].title,
+                params[0].description,
+                params[0].priority,
+                params[0].userID,
+                params[0].id
+            )
 
             noteDao.update(noteEntity)
 
@@ -95,8 +108,13 @@ class NoteRepository(application: Application) {
 
         override fun doInBackground(vararg params: NoteUI): Unit? {
 
-            val noteEntity = NoteEntity(params[0].title, params[0].description, params[0].priority)
-            noteEntity.setNoteId(params[0].id)
+            val noteEntity = NoteEntity(
+                params[0].title,
+                params[0].description,
+                params[0].priority,
+                params[0].userID,
+                params[0].id
+            )
 
             noteDao.delete(noteEntity)
 

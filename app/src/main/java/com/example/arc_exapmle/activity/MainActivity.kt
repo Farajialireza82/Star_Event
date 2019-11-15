@@ -1,10 +1,12 @@
-package com.example.arc_exapmle
+package com.example.arc_exapmle.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -14,22 +16,42 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.arc_exapmle.R
+import com.example.arc_exapmle.note.*
+import com.example.arc_exapmle.user.UserUI
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var noteViewModel: NoteViewModel
     lateinit var recyclerView: RecyclerView
+    lateinit var welcomeTextView: TextView
 
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note)
+        val intent: Intent = intent
+
+        val user : UserUI = intent.getParcelableExtra(LoginActivity.loginValue)
+
+        noteViewModel = ViewModelProviders.of(this , NoteViewModelFactory(application , user.user_id) ).get(NoteViewModel::class.java)
+
+        welcomeTextView = findViewById(R.id.welcomeTextView)
+
+        welcomeTextView.text = "Welcome ${user.username}"
+
+        val buttonAddNote: FloatingActionButton = findViewById(R.id.button_add_note)
         buttonAddNote.setOnClickListener {
 
-            val intent = Intent(this, AddNoteKtActivity::class.java)
-            startActivityForResult(intent, 1)
+            val addIntent = Intent(this, AddNoteKtActivity::class.java)
+
+            addIntent.putExtra(LoginActivity.loginValue , user)
+
+            startActivityForResult(addIntent, 1)
 
         }
 
@@ -43,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
 
-        noteViewModel = ViewModelProviders.of(this).get(NoteViewModel::class.java)
 
         noteViewModel.getAllNotes().observe(
             this,
@@ -59,10 +80,11 @@ class MainActivity : AppCompatActivity() {
 
                     noteUIList.add(
                         NoteUI(
-                            noteEntity.getNoteId(),
+                            noteEntity.noteId,
                             noteEntity.title,
                             noteEntity.description,
-                            noteEntity.priority
+                            noteEntity.priority,
+                            user.user_id
                         )
                     )
 
@@ -98,9 +120,10 @@ class MainActivity : AppCompatActivity() {
                     val noteEntity = NoteEntity(
                         it.title,
                         it.description,
-                        it.priority
+                        it.priority,
+                        it.userID
+                        ,it.id
                     )
-                    noteEntity.setNoteId(it.id)
 
                     noteViewModel.delete(
                         noteEntity
@@ -126,7 +149,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        var menuInflater = menuInflater
+        val menuInflater = menuInflater
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
