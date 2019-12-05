@@ -42,11 +42,6 @@ class CreateAccountActivityViewModel(application: Application) : AndroidViewMode
                         repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
 
 
-                        //val mainIntent = Intent(this , MainActivity::class.java)
-
-                        // mainIntent.putExtra(LoginActivity.loginValue , UserUI(newUserEntity.username , newUserEntity.user_id))
-
-                        // startActivity(mainIntent)
 
                         return 2
 
