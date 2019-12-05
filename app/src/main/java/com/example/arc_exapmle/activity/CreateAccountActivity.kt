@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
 import com.example.arc_exapmle.user.UserEntity
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.user.UserViewModel
+import com.example.arc_exapmle.viewModel.CreateAccountActivityViewModel
 import java.util.*
 
 class CreateAccountActivity : AppCompatActivity() {
@@ -19,16 +21,15 @@ class CreateAccountActivity : AppCompatActivity() {
     private lateinit var numericIdEditText: EditText
     private lateinit var createButton: Button
 
-    private lateinit var database: UserViewModel
-
-    private lateinit var allUsers: List<UserEntity>
+    private lateinit var createAccountActivityViewModel: CreateAccountActivityViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
-        database = ViewModelProviders.of(this).get(UserViewModel::class.java)
+        createAccountActivityViewModel =
+            ViewModelProviders.of(this).get(CreateAccountActivityViewModel::class.java)
 
 
         usernameEditText = findViewById(R.id.createNameEditText)
@@ -39,48 +40,32 @@ class CreateAccountActivity : AppCompatActivity() {
 
         createButton.setOnClickListener {
 
-            val userName: String = usernameEditText.text.toString()
+            /*val userName = usernameEditText.text.toString()
 
-            val numericId: Int = numericIdEditText.text.toString().toInt()
+            val numericId = numericIdEditText.text.toString().toInt()*/
 
+            val newUserResult = createAccountActivityViewModel.createNewAccount(
+                usernameEditText.text,
+                numericIdEditText.text
+            )
 
-            if (usernameEditText.text.trim() == "") {
+            when (newUserResult) {
+                0 -> usernameEditText.error = "This field cannot remain empty"
+                1 -> numericIdEditText.error = "This field cannot remain empty"
+                2 -> {
 
-                usernameEditText.error = "This field cannot remain empty"
+                    val mainIntent = Intent(this, LoginActivity::class.java)
 
-            } else if (numericIdEditText.text.trim() == "") {
+                    Toast.makeText(this, "User Created Successfully . Log in again", Toast.LENGTH_LONG).show()
 
-                usernameEditText.error = "This field cannot remain empty"
-
-            } else {
-
-               val foundedUsers = database.findUserById(numericId)
-
-                if(foundedUsers.isEmpty()){
-
-                    val newUserEntity = UserEntity(userName , numericId)
-
-                    database.insert(newUserEntity)
-
-
-
-                    val mainIntent = Intent(this , MainActivity::class.java)
-
-                    mainIntent.putExtra(LoginActivity.loginValue , UserUI(newUserEntity.username , newUserEntity.user_id))
 
                     startActivity(mainIntent)
 
-
-                }else if(foundedUsers.isNotEmpty()){
-
-                    Log.i("CreateAccountActivity:onCreate()" , "foundedUsers is not empty")
-
-                    numericIdEditText.error = "UserId Already exits"
-
                 }
-
-
+                3 -> numericIdEditText.error = "UserId Already exits"
+                4 -> Toast.makeText(this, "something went wrong", Toast.LENGTH_LONG).show()
             }
+
 
         }
 
