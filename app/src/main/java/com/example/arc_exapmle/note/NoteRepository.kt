@@ -3,6 +3,7 @@ package com.example.arc_exapmle.note
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.user.UserEntity
 
 class NoteRepository(application: Application , val userId : Int) {
@@ -10,8 +11,8 @@ class NoteRepository(application: Application , val userId : Int) {
     private var noteDao: NoteDao
 
     init {
-        val dataBase: NoteDatabase =
-            NoteDatabase.getInstance(application)
+        val dataBase: StarDatabase =
+            StarDatabase.getInstance(application)
         noteDao = dataBase.noteDao()
         allNotes = noteDao.getAllNotes(userId)
     }
@@ -28,6 +29,7 @@ class NoteRepository(application: Application , val userId : Int) {
         UpdateNoteAsyncTask(noteDao).execute(note)
 
     }
+
 
     fun delete(note: NoteUI) {
 
