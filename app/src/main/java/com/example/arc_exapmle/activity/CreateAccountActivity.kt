@@ -62,6 +62,8 @@ class CreateAccountActivity : AppCompatActivity() {
 
                         startActivity(mainIntent)
 
+                        finish()
+
                     }
                 }
 
