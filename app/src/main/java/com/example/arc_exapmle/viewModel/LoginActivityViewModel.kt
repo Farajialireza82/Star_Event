@@ -1,14 +1,12 @@
 package com.example.arc_exapmle.viewModel
 
-import android.content.Intent
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.arc_exapmle.ViewModelDelivery
-import com.example.arc_exapmle.activity.LoginActivity
-import com.example.arc_exapmle.activity.MainActivity
 import com.example.arc_exapmle.user.UserRepository
-import com.example.arc_exapmle.user.UserUI
+import java.lang.NumberFormatException
 
 class LoginActivityViewModel : ViewModel() {
 
@@ -22,43 +20,68 @@ class LoginActivityViewModel : ViewModel() {
 
     }
 
-    fun userEntery(loginID:String): MutableLiveData<ViewModelDelivery>{
+    fun userEntry(loginID:String): LiveData<ViewModelDelivery> {
 
-        var delivery:ViewModelDelivery
+
+         var delivery:ViewModelDelivery
 
         if (loginID.trim() == "") {
 
             delivery = ViewModelDelivery("this field cannot remain empty" , "ID")
 
-            idEditText.error = "this field cannot remain empty"
+           // idEditText.error = "this field cannot remain empty"
 
         } else {
 
-            val numericLoginId = loginID.toInt()
+            try {
+                val numericLoginId = loginID.toInt()
 
-            val users = database.findUserById(numericLoginId)
+                val users = repository.findUserById(numericLoginId)
 
-            Log.i("LoginActivity:OnCreate", users.size.toString())
+                Log.i("LoginActivityViewModel:userEntry", users.size.toString())
 
 
-            if(users.isEmpty()){
-                idEditText.error = "User not found"
-            }else{
+                if(users.isEmpty()){
 
-                val foundedUser = users[0]
+                    delivery = ViewModelDelivery("User not found" , "ID")
 
-                val foundedUserUI = UserUI(foundedUser.username , foundedUser.user_id)
+                    //  idEditText.error = "User not found"
+                }else{
 
-                val mainIntent = Intent(this , MainActivity::class.java)
+                    val foundedUser = users[0]
 
-                mainIntent.putExtra(LoginActivity.loginValue, foundedUserUI)
+                    delivery = ViewModelDelivery(foundedUser.username , foundedUser.user_id.toString())
 
-                startActivity(mainIntent)
+                    /*val foundedUserUI = UserUI(foundedUser.username , foundedUser.user_id)
+
+                    val mainIntent = Intent(this , MainActivity::class.java)
+
+                    mainIntent.putExtra(LoginActivity.loginValue, foundedUserUI)
+
+                    startActivity(mainIntent)
+    */
+                }
+
+            }catch (e:NumberFormatException){
+
+                delivery = ViewModelDelivery("Invalid Id" , "ID")
 
             }
 
 
+
+
+
+
+
         }
+
+        mutableLiveData = MutableLiveData()
+
+
+        mutableLiveData.value = delivery
+
+        return mutableLiveData
 
     }
 
