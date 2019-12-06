@@ -44,35 +44,47 @@ class CreateAccountActivity : AppCompatActivity() {
 
             createAccountActivityViewModel.createNewAccount(
                 usernameEditText.text.toString(), numericIdEditText.text.toString()
-            ).observe(this, Observer {
-
-                when {
-                    it.errorTag == "username" -> usernameEditText.error = it.errorText
-                    it.errorTag == "id" -> numericIdEditText.error = it.errorText
-                    else -> {
-
-                        val mainIntent = Intent(this, LoginActivity::class.java)
-
-                        Toast.makeText(
-                            this,
-                            it.errorText,
-                            Toast.LENGTH_LONG
-                        ).show()
-
-
-                        startActivity(mainIntent)
-
-                        finish()
-
-                    }
-                }
-
-            })
-
-
+            )
         }
 
 
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        createAccountActivityViewModel.usernameEditTextMutableLiveData.observe(this , Observer {
+
+            usernameEditText.error = it
+
+        })
+
+        createAccountActivityViewModel.idEditTextMutableLiveData.observe(this , Observer {
+
+            numericIdEditText.error = it
+
+        })
+
+        createAccountActivityViewModel.toastMutableLiveData.observe(this , Observer {
+
+            Toast.makeText(
+                this,
+                it.errorText,
+                Toast.LENGTH_LONG
+            ).show()
+
+            if(it.errorTag == "intent") {
+
+                val mainIntent = Intent(this, LoginActivity::class.java)
+
+                startActivity(mainIntent)
+
+                finish()
+            }
+        })
+
+
+    }
+
 
 }
