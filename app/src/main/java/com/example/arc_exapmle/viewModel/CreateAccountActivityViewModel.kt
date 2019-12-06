@@ -11,9 +11,14 @@ import com.example.arc_exapmle.user.UserUI
 
 class CreateAccountActivityViewModel : ViewModel() {
 
-    private lateinit var repository: UserRepository
+      private lateinit var repository: UserRepository
 
-    private lateinit var mutableLiveData: MutableLiveData<ViewModelDelivery>
+    var mutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
+    var toastMutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
+      var usernameEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
+      var idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
+
+
 
 
     fun setUserRepo(userRepo: UserRepository) {
@@ -23,19 +28,13 @@ class CreateAccountActivityViewModel : ViewModel() {
     }
 
 
-    fun createNewAccount(username: String, numericId: String): LiveData<ViewModelDelivery> {
-
-
-
-        var viewModelDelivery: ViewModelDelivery
+    fun createNewAccount(username: String, numericId: String){
 
         when {
 
-            username.trim() == "" -> viewModelDelivery =
-                ViewModelDelivery("this Field cannot remain empty", "username")
+            username.trim() == "" -> usernameEditTextMutableLiveData.value = "This field cannot remain empty"
 
-            numericId.trim() == "" -> viewModelDelivery =
-                ViewModelDelivery("This field cannot remain empty", "id")
+            numericId.trim() == "" -> idEditTextMutableLiveData.value = "This field cannot remain empty"
 
             else -> {
 
@@ -50,9 +49,8 @@ class CreateAccountActivityViewModel : ViewModel() {
                         repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
 
 
+                        toastMutableLiveData.value = ViewModelDelivery("User Created Successfully . Log in again", "intent")
 
-                        viewModelDelivery =
-                            ViewModelDelivery("User Created Successfully . Log in again", "")
 
 
                     }
@@ -61,21 +59,16 @@ class CreateAccountActivityViewModel : ViewModel() {
                         Log.i("CreateAccountActivityViewModel", "foundedUsers is not empty")
 
 
-                        viewModelDelivery = ViewModelDelivery("userId already exits", "username")
+                        usernameEditTextMutableLiveData.value = "UserId already exits"
 
 
                     }
-                    else -> viewModelDelivery = ViewModelDelivery("this is odd", "username")
+                    else -> toastMutableLiveData.value = ViewModelDelivery("this is odd" , "")
                 }
 
 
             }
 
         }
-        mutableLiveData = MutableLiveData()
-
-        mutableLiveData.value = viewModelDelivery
-
-        return mutableLiveData
     }
 }
