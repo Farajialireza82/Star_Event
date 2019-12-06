@@ -3,19 +3,15 @@ package com.example.arc_exapmle.user
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
-import com.example.arc_exapmle.note.NoteDao
-import com.example.arc_exapmle.note.NoteDatabase
-import com.example.arc_exapmle.note.NoteEntity
-import org.w3c.dom.Entity
+import com.example.arc_exapmle.StarDatabase
 
 class UserRepository(application: Application) {
     private var allUsers: LiveData<List<UserEntity>>
     private var userDao: UserDao
-    private lateinit var foundedUsers: List<UserEntity>
 
     init {
-        val database: NoteDatabase =
-            NoteDatabase.getInstance(application)
+        val database: StarDatabase =
+            StarDatabase.getInstance(application)
 
         userDao = database.userDao()
         allUsers = userDao.getAllUsers()
