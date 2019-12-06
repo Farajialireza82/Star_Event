@@ -29,7 +29,6 @@ class LoginActivityViewModel : ViewModel() {
 
             delivery = ViewModelDelivery("this field cannot remain empty" , "ID")
 
-           // idEditText.error = "this field cannot remain empty"
 
         } else {
 
@@ -45,21 +44,12 @@ class LoginActivityViewModel : ViewModel() {
 
                     delivery = ViewModelDelivery("User not found" , "ID")
 
-                    //  idEditText.error = "User not found"
                 }else{
 
                     val foundedUser = users[0]
 
                     delivery = ViewModelDelivery(foundedUser.username , foundedUser.user_id.toString())
 
-                    /*val foundedUserUI = UserUI(foundedUser.username , foundedUser.user_id)
-
-                    val mainIntent = Intent(this , MainActivity::class.java)
-
-                    mainIntent.putExtra(LoginActivity.loginValue, foundedUserUI)
-
-                    startActivity(mainIntent)
-    */
                 }
 
             }catch (e:NumberFormatException){
