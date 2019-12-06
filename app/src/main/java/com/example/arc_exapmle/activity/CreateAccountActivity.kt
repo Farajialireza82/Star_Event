@@ -2,18 +2,16 @@ package com.example.arc_exapmle.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
-import com.example.arc_exapmle.user.UserEntity
-import com.example.arc_exapmle.user.UserUI
-import com.example.arc_exapmle.user.UserViewModel
+import com.example.arc_exapmle.ViewModelDelivery
+import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.viewModel.CreateAccountActivityViewModel
-import java.util.*
 
 class CreateAccountActivity : AppCompatActivity() {
 
@@ -28,9 +26,12 @@ class CreateAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
+        val repository = UserRepository(application)
+
         createAccountActivityViewModel =
             ViewModelProviders.of(this).get(CreateAccountActivityViewModel::class.java)
 
+        createAccountActivityViewModel.setUserRepo(repository)
 
         usernameEditText = findViewById(R.id.createNameEditText)
         numericIdEditText = findViewById(R.id.createIdEditText)
@@ -40,31 +41,31 @@ class CreateAccountActivity : AppCompatActivity() {
 
         createButton.setOnClickListener {
 
-            /*val userName = usernameEditText.text.toString()
 
-            val numericId = numericIdEditText.text.toString().toInt()*/
+            createAccountActivityViewModel.createNewAccount(
+                usernameEditText.text.toString(), numericIdEditText.text.toString()
+            ).observe(this, Observer {
 
-            val newUserResult = createAccountActivityViewModel.createNewAccount(
-                usernameEditText.text,
-                numericIdEditText.text
-            )
+                when {
+                    it.errorTag == "username" -> usernameEditText.error = it.errorText
+                    it.errorTag == "id" -> numericIdEditText.error = it.errorText
+                    else -> {
 
-            when (newUserResult) {
-                0 -> usernameEditText.error = "This field cannot remain empty"
-                1 -> numericIdEditText.error = "This field cannot remain empty"
-                2 -> {
+                        val mainIntent = Intent(this, LoginActivity::class.java)
 
-                    val mainIntent = Intent(this, LoginActivity::class.java)
+                        Toast.makeText(
+                            this,
+                            it.errorText,
+                            Toast.LENGTH_LONG
+                        ).show()
 
-                    Toast.makeText(this, "User Created Successfully . Log in again", Toast.LENGTH_LONG).show()
 
+                        startActivity(mainIntent)
 
-                    startActivity(mainIntent)
-
+                    }
                 }
-                3 -> numericIdEditText.error = "UserId Already exits"
-                4 -> Toast.makeText(this, "something went wrong", Toast.LENGTH_LONG).show()
-            }
+
+            })
 
 
         }
