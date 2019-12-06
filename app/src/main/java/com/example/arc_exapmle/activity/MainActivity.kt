@@ -21,7 +21,6 @@ import com.example.arc_exapmle.note.*
 import com.example.arc_exapmle.user.UserUI
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var noteViewModel: NoteViewModel
