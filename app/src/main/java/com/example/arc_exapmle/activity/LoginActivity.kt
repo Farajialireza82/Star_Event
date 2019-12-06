@@ -74,39 +74,6 @@ class LoginActivity : AppCompatActivity() {
 
             })
 
-           /* if (loginID.trim() == "") {
-
-                idEditText.error = "this field cannot remain empty"
-
-            } else {
-
-                val numericLoginId = loginID.toInt()
-
-                val users = database.findUserById(numericLoginId)
-
-                Log.i("LoginActivity:OnCreate", users.size.toString())
-
-
-               if(users.isEmpty()){
-                   idEditText.error = "User not found"
-               }else{
-
-                   val foundedUser = users[0]
-
-                   val foundedUserUI = UserUI(foundedUser.username , foundedUser.user_id)
-
-                   val mainIntent = Intent(this , MainActivity::class.java)
-
-                   mainIntent.putExtra(loginValue , foundedUserUI)
-
-                   startActivity(mainIntent)
-
-               }
-
-
-            }*/
-
-
         }
         createAccountTextView.setOnClickListener {
 
