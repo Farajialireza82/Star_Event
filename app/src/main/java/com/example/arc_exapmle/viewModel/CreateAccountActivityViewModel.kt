@@ -1,49 +1,58 @@
 package com.example.arc_exapmle.viewModel
 
-import android.app.Application
-import android.content.Intent
-import android.text.Editable
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.arc_exapmle.activity.LoginActivity
-import com.example.arc_exapmle.activity.MainActivity
+import com.example.arc_exapmle.ViewModelDelivery
 import com.example.arc_exapmle.user.UserEntity
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
 
-class CreateAccountActivityViewModel(application: Application) : AndroidViewModel(application) {
+class CreateAccountActivityViewModel : ViewModel() {
 
-    private var repository = UserRepository(application)
-    private val allUsers: LiveData<List<UserEntity>>
+    private lateinit var repository: UserRepository
 
-    init {
-        allUsers = repository.getAllUsers()
+    private lateinit var mutableLiveData: MutableLiveData<ViewModelDelivery>
+
+
+    fun setUserRepo(userRepo: UserRepository) {
+
+        repository = userRepo
+
     }
 
-    fun createNewAccount(username: Editable, numericId: Editable): Int {
+
+    fun createNewAccount(username: String, numericId: String): LiveData<ViewModelDelivery> {
+
+
+
+        var viewModelDelivery: ViewModelDelivery
 
         when {
-            username.trim() == "" -> //username.error = "This field cannot remain empty"
-                return 0
-            numericId.trim() == "" -> //usernameEditText.error = "This field cannot remain empty"
-                return 1
+
+            username.trim() == "" -> viewModelDelivery =
+                ViewModelDelivery("this Field cannot remain empty", "username")
+
+            numericId.trim() == "" -> viewModelDelivery =
+                ViewModelDelivery("This field cannot remain empty", "id")
+
             else -> {
 
-                val foundedUsers = repository.findUserById(numericId.toString().toInt())
+                val foundedUsers = repository.findUserById(numericId.toInt())
 
                 when {
                     foundedUsers.isEmpty() -> {
 
                         val newUserEntity =
-                            UserEntity(username.toString(), numericId.toString().toInt())
+                            UserEntity(username, numericId.toInt())
 
                         repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
 
 
 
-                        return 2
+                        viewModelDelivery =
+                            ViewModelDelivery("User Created Successfully . Log in again", "")
 
 
                     }
@@ -52,15 +61,21 @@ class CreateAccountActivityViewModel(application: Application) : AndroidViewMode
                         Log.i("CreateAccountActivityViewModel", "foundedUsers is not empty")
 
 
-                        return 3
+                        viewModelDelivery = ViewModelDelivery("userId already exits", "username")
 
 
                     }
-                    else -> return 4
+                    else -> viewModelDelivery = ViewModelDelivery("this is odd", "username")
                 }
 
 
             }
+
         }
+        mutableLiveData = MutableLiveData()
+
+        mutableLiveData.value = viewModelDelivery
+
+        return mutableLiveData
     }
 }
