@@ -2,16 +2,16 @@ package com.example.arc_exapmle.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
+import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
-import com.example.arc_exapmle.user.UserViewModel
+import com.example.arc_exapmle.viewModel.LoginActivityViewModel
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,7 +22,10 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var loginButton: Button
 
-    private lateinit var database: UserViewModel
+    private lateinit var userRepository: UserRepository
+
+    private lateinit var loginActivityViewModel: LoginActivityViewModel
+
 
 
     companion object {
@@ -33,7 +36,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        database = ViewModelProviders.of(this).get(UserViewModel::class.java)
+        userRepository = UserRepository(application)
+
+        loginActivityViewModel = ViewModelProviders.of(this).get(LoginActivityViewModel::class.java)
+
+        loginActivityViewModel.setUserRepo(userRepository)
 
         idEditText = findViewById(R.id.idEditText)
         loginButton = findViewById(R.id.enterButton)
@@ -43,7 +50,31 @@ class LoginActivity : AppCompatActivity() {
 
             val loginID = idEditText.text.toString()
 
-            if (loginID.trim() == "") {
+            loginActivityViewModel.userEntry(loginID).observe(this , Observer {
+
+                if(it.errorTag == "ID"){
+
+                    idEditText.error = it.errorText
+
+                }else{
+
+                    val foundedUserUI = UserUI(it.errorText , it.errorTag.toInt())
+
+                    val mainIntent = Intent(this , MainActivity::class.java)
+
+                    mainIntent.putExtra(loginValue , foundedUserUI)
+
+                    startActivity(mainIntent)
+
+                    finish()
+
+
+
+                }
+
+            })
+
+           /* if (loginID.trim() == "") {
 
                 idEditText.error = "this field cannot remain empty"
 
@@ -73,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
                }
 
 
-            }
+            }*/
 
 
         }
@@ -82,6 +113,8 @@ class LoginActivity : AppCompatActivity() {
             val createAccountIntent = Intent(this@LoginActivity, CreateAccountActivity::class.java)
 
             startActivity(createAccountIntent)
+
+            finish()
 
 
         }
