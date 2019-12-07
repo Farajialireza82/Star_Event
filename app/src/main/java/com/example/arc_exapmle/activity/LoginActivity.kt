@@ -42,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginActivityViewModel.setUserRepo(userRepository)
 
+
         idEditText = findViewById(R.id.idEditText)
         loginButton = findViewById(R.id.enterButton)
         createAccountTextView = findViewById(R.id.createAccountTextView)
@@ -50,29 +51,8 @@ class LoginActivity : AppCompatActivity() {
 
             val loginID = idEditText.text.toString()
 
-            loginActivityViewModel.userEntry(loginID).observe(this , Observer {
+            loginActivityViewModel.userEntry(loginID)
 
-                if(it.errorTag == "ID"){
-
-                    idEditText.error = it.errorText
-
-                }else{
-
-                    val foundedUserUI = UserUI(it.errorText , it.errorTag.toInt())
-
-                    val mainIntent = Intent(this , MainActivity::class.java)
-
-                    mainIntent.putExtra(loginValue , foundedUserUI)
-
-                    startActivity(mainIntent)
-
-                    finish()
-
-
-
-                }
-
-            })
 
         }
         createAccountTextView.setOnClickListener {
@@ -87,4 +67,29 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        loginActivityViewModel.idEditTextMutableLiveData.observe(this , Observer {
+
+            idEditText.error = it
+
+        })
+
+        loginActivityViewModel.onSuccessMutableLiveData.observe(this , Observer {
+
+            val mainIntent = Intent(this , MainActivity::class.java)
+
+            mainIntent.putExtra(loginValue , UserUI(it.errorText , it.errorTag.toInt()))
+
+            startActivity(mainIntent)
+
+            finish()
+
+        })
+
+
+    }
+
 }
