@@ -12,6 +12,7 @@ import com.example.arc_exapmle.R
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.LoginActivityViewModel
+import com.example.arc_exapmle.factory.LoginActivityViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginActivityViewModel: LoginActivityViewModel
 
 
-
     companion object {
         const val loginValue = "id"
     }
@@ -38,7 +38,10 @@ class LoginActivity : AppCompatActivity() {
 
         userRepository = UserRepository(application)
 
-        loginActivityViewModel = ViewModelProviders.of(this).get(LoginActivityViewModel::class.java)
+        loginActivityViewModel = ViewModelProviders.of(
+            this,
+            LoginActivityViewModelFactory(userRepository)
+        ).get(LoginActivityViewModel::class.java)
 
         loginActivityViewModel.setUserRepo(userRepository)
 
@@ -71,17 +74,17 @@ class LoginActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        loginActivityViewModel.idEditTextMutableLiveData.observe(this , Observer {
+        loginActivityViewModel.idEditTextMutableLiveData.observe(this, Observer {
 
             idEditText.error = it
 
         })
 
-        loginActivityViewModel.onSuccessMutableLiveData.observe(this , Observer {
+        loginActivityViewModel.onSuccessMutableLiveData.observe(this, Observer {
 
-            val mainIntent = Intent(this , MainActivity::class.java)
+            val mainIntent = Intent(this, MainActivity::class.java)
 
-            mainIntent.putExtra(loginValue , UserUI(it.errorText , it.errorTag.toInt()))
+            mainIntent.putExtra(loginValue, UserUI(it.errorText, it.errorTag.toInt()))
 
             startActivity(mainIntent)
 
