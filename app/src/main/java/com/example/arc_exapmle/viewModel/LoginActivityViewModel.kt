@@ -12,7 +12,9 @@ class LoginActivityViewModel : ViewModel() {
 
     private lateinit var repository: UserRepository
 
-    private lateinit var mutableLiveData: MutableLiveData<ViewModelDelivery>
+    val idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
+    val onSuccessMutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
+
 
     fun setUserRepo(userRepo: UserRepository) {
 
@@ -20,15 +22,13 @@ class LoginActivityViewModel : ViewModel() {
 
     }
 
-    fun userEntry(loginID:String): LiveData<ViewModelDelivery> {
+    fun userEntry(loginID: String) {
 
 
-         var delivery:ViewModelDelivery
 
         if (loginID.trim() == "") {
 
-            delivery = ViewModelDelivery("this field cannot remain empty" , "ID")
-
+            idEditTextMutableLiveData.value = "this field cannot remain empty"
 
         } else {
 
@@ -40,41 +40,28 @@ class LoginActivityViewModel : ViewModel() {
                 Log.i("LoginActivityViewModel:userEntry", users.size.toString())
 
 
-                if(users.isEmpty()){
+                if (users.isEmpty()) {
 
-                    delivery = ViewModelDelivery("User not found" , "ID")
+                    idEditTextMutableLiveData.value = "User Not Found"
 
-                }else{
+                } else {
 
                     val foundedUser = users[0]
 
-                    delivery = ViewModelDelivery(foundedUser.username , foundedUser.user_id.toString())
+                    onSuccessMutableLiveData.value = ViewModelDelivery(foundedUser.username , foundedUser.user_id.toString())
 
                 }
 
-            }catch (e:NumberFormatException){
+            } catch (e: NumberFormatException) {
 
-                delivery = ViewModelDelivery("Invalid Id" , "ID")
+                idEditTextMutableLiveData.value = "Invalid Input"
 
             }
 
 
-
-
-
-
-
         }
 
-        mutableLiveData = MutableLiveData()
-
-
-        mutableLiveData.value = delivery
-
-        return mutableLiveData
-
     }
-
 
 
 }
