@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 
             addIntent.putExtra(LoginActivity.loginValue, user)
 
-            startActivityForResult(addIntent, 1)
+            startActivity(addIntent)
 
         }
 
@@ -103,17 +103,6 @@ class MainActivity : AppCompatActivity() {
         }).attachToRecyclerView(recyclerView)
 
 
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when {
-            requestCode == 1 && resultCode == Activity.RESULT_OK -> // noteViewModel.insert(mNoteEntity)
-
-                Toast.makeText(this, "NoteSaved", Toast.LENGTH_SHORT).show()
-            else -> Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
