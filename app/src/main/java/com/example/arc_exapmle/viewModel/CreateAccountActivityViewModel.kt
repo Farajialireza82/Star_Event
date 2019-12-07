@@ -9,23 +9,15 @@ import com.example.arc_exapmle.user.UserEntity
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
 
-class CreateAccountActivityViewModel : ViewModel() {
+class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel() {
 
-      private lateinit var repository: UserRepository
+      private var repository: UserRepository = userRepository
 
-    var mutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
     var toastMutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
       var usernameEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
       var idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
 
-
-
-    fun setUserRepo(userRepo: UserRepository) {
-
-        repository = userRepo
-
-    }
 
 
     fun createNewAccount(username: String, numericId: String){
