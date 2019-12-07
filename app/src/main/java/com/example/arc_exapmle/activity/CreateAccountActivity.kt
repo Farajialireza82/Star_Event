@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
-import com.example.arc_exapmle.ViewModelDelivery
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.viewModel.CreateAccountActivityViewModel
+import com.example.arc_exapmle.factory.CreateAccountActivityViewModelFactory
 
 class CreateAccountActivity : AppCompatActivity() {
 
@@ -29,9 +29,10 @@ class CreateAccountActivity : AppCompatActivity() {
         val repository = UserRepository(application)
 
         createAccountActivityViewModel =
-            ViewModelProviders.of(this).get(CreateAccountActivityViewModel::class.java)
+            ViewModelProviders.of(this ,
+                CreateAccountActivityViewModelFactory(repository)
+            ).get(CreateAccountActivityViewModel::class.java)
 
-        createAccountActivityViewModel.setUserRepo(repository)
 
         usernameEditText = findViewById(R.id.createNameEditText)
         numericIdEditText = findViewById(R.id.createIdEditText)
