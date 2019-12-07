@@ -8,13 +8,12 @@ import com.example.arc_exapmle.ViewModelDelivery
 import com.example.arc_exapmle.user.UserRepository
 import java.lang.NumberFormatException
 
-class LoginActivityViewModel : ViewModel() {
+class LoginActivityViewModel(userRepository: UserRepository) : ViewModel() {
 
-    private lateinit var repository: UserRepository
+    private var repository: UserRepository = userRepository
 
     val idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
     val onSuccessMutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
-
 
     fun setUserRepo(userRepo: UserRepository) {
 
