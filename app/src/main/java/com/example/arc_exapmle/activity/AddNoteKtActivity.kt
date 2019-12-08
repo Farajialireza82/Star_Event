@@ -65,9 +65,9 @@ class AddNoteKtActivity : AppCompatActivity() {
     private fun saveNote() {
 
 
-            val title = editTextTitle!!.text.toString()
+            val title = editTextTitle.text.toString()
 
-            val description = editTextDescription!!.text.toString()
+            val description = editTextDescription.text.toString()
 
             val priority = numberPickerPriority!!.value
 
