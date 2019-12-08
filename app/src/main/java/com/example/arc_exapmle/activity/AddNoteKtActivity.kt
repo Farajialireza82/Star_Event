@@ -31,7 +31,6 @@ class AddNoteKtActivity : AppCompatActivity() {
     private lateinit var editTextTitle: EditText
     private lateinit var editTextDescription: EditText
     private var numberPickerPriority: NumberPicker? = null
-    private var clicked = false
     private lateinit var user: UserUI
 
     private lateinit var addNoteKtActivityViewModel: AddNoteKtActivityViewModel
@@ -65,10 +64,6 @@ class AddNoteKtActivity : AppCompatActivity() {
 
     private fun saveNote() {
 
-        if (!clicked) {
-
-            clicked = true
-
 
             val title = editTextTitle!!.text.toString()
 
@@ -78,7 +73,7 @@ class AddNoteKtActivity : AppCompatActivity() {
 
             addNoteKtActivityViewModel.addNote(title , description , priority)
 
-        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
