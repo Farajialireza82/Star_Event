@@ -43,8 +43,6 @@ class LoginActivity : AppCompatActivity() {
             LoginActivityViewModelFactory(userRepository)
         ).get(LoginActivityViewModel::class.java)
 
-        loginActivityViewModel.setUserRepo(userRepository)
-
 
         idEditText = findViewById(R.id.idEditText)
         loginButton = findViewById(R.id.enterButton)
@@ -87,8 +85,6 @@ class LoginActivity : AppCompatActivity() {
             mainIntent.putExtra(loginValue, UserUI(it.errorText, it.errorTag.toInt()))
 
             startActivity(mainIntent)
-
-            finish()
 
         })
 
