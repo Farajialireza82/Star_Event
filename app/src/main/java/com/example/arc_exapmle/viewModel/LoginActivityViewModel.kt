@@ -15,11 +15,6 @@ class LoginActivityViewModel(userRepository: UserRepository) : ViewModel() {
     val idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
     val onSuccessMutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
 
-    fun setUserRepo(userRepo: UserRepository) {
-
-        repository = userRepo
-
-    }
 
     fun userEntry(loginID: String) {
 
