@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Galaxy Note</string>
+    <string name="enter">ورود</string>
+    <string name="id">شماره شناسایی</string>
+    <string name="name">نام</string>
+    <string name="new_to_galaxy_note_create_a_new_account">کاربر جدید هستی؟ حساب تازه بساز</string>
+    <string name="title_activity_create_account">کاربر جدید</string>
+    <string name="welcome">خوش آمدید</string>
+    <string name="enter_your_info">اطلاعات خود را وارد کنید</string>
+
+</resources>
