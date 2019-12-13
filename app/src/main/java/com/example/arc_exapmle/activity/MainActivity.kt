@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -164,6 +165,19 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+/*    override fun onBackPressed() {
+        super.onBackPressed()
+
+        val loginIntent = Intent(this , LoginActivity::class.java)
+
+        Log.i("onBackButtonPressed" , "should see loginIntent")
+
+        startActivity(loginIntent)
+
+    }*/
+
+
 
 
 }
