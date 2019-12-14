@@ -55,14 +55,14 @@ class LoginActivity : AppCompatActivity() {
             loginActivityViewModel.userEntry(loginID)
 
 
+
+
         }
         createAccountTextView.setOnClickListener {
 
-            val createAccountIntent = Intent(this@LoginActivity, CreateAccountActivity::class.java)
+            val createAccountIntent = Intent(this, CreateAccountActivity::class.java)
 
             startActivity(createAccountIntent)
-
-            finish()
 
 
         }
@@ -78,16 +78,38 @@ class LoginActivity : AppCompatActivity() {
 
         })
 
+
         loginActivityViewModel.onSuccessMutableLiveData.observe(this, Observer {
 
             val mainIntent = Intent(this, MainActivity::class.java)
 
-            mainIntent.putExtra(loginValue, UserUI(it.errorText, it.errorTag.toInt()))
+            mainIntent.putExtra(loginValue, UserUI(it.username, it.userId.toInt()))
 
             startActivity(mainIntent)
 
         })
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
 
     }
 
