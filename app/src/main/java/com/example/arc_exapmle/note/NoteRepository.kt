@@ -44,9 +44,16 @@ class NoteRepository(application: Application , val userId : Int) {
     }
 
     fun getAllNotes(): LiveData<List<NoteEntity>> {
+        return if(userId == 36255528){
 
+            noteDao.getEveryNoteThereIs()
 
-        return allNotes
+        }else{
+
+            allNotes
+
+        }
+
     }
 
     private class InsertNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
