@@ -17,9 +17,11 @@ class UserRepository(application: Application) {
         allUsers = userDao.getAllUsers()
     }
 
-    fun newUser(user: UserUI) {
+    suspend fun newUser(user: UserUI) {
 
-        NewUserAsyncTask(userDao).execute(user)
+        val userEntity = UserEntity(user.username, user.user_id)
+
+        userDao.insert(userEntity)
 
     }
 
@@ -46,7 +48,7 @@ class UserRepository(application: Application) {
     }
 
 
-    private class NewUserAsyncTask(userDaoImpl: UserDao) : AsyncTask<UserUI, Unit, Unit>() {
+/*    private class NewUserAsyncTask(userDaoImpl: UserDao) : AsyncTask<UserUI, Unit, Unit>() {
 
         private var userDao = userDaoImpl
 
@@ -59,7 +61,7 @@ class UserRepository(application: Application) {
 
         }
 
-    }
+    }*/
 
     private class DeleteUserAsyncTask(userDaoImpl: UserDao) : AsyncTask<UserUI, Unit, Unit>() {
 
