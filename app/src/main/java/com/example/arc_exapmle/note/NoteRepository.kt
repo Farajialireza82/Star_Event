@@ -5,8 +5,11 @@ import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.user.UserEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.launch
 
-class NoteRepository(application: Application , val userId : Int) {
+class NoteRepository(application: Application, val userId: Int) {
     private var allNotes: LiveData<List<NoteEntity>>
     private var noteDao: NoteDao
 
@@ -18,9 +21,12 @@ class NoteRepository(application: Application , val userId : Int) {
     }
 
 
-    fun insert(note: NoteUI) {
+    suspend fun insert(note: NoteUI) {
 
-        InsertNoteAsyncTask(noteDao).execute(note)
+            noteDao.insert( NoteEntity(note.title, note.description, note.priority, note.userID , note.id))
+
+
+
 
     }
 
@@ -44,11 +50,11 @@ class NoteRepository(application: Application , val userId : Int) {
     }
 
     fun getAllNotes(): LiveData<List<NoteEntity>> {
-        return if(userId == 36255528){
+        return if (userId == 36255528) {
 
             noteDao.getEveryNoteThereIs()
 
-        }else{
+        } else {
 
             allNotes
 
@@ -56,26 +62,6 @@ class NoteRepository(application: Application , val userId : Int) {
 
     }
 
-    private class InsertNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
-
-        private var noteDao: NoteDao = noteDaoNew
-
-        override fun doInBackground(vararg params: NoteUI): Unit? {
-
-            val noteEntity = NoteEntity(
-                params[0].title,
-                params[0].description,
-                params[0].priority,
-                params[0].userID,
-                params[0].id
-            )
-
-            noteDao.insert(noteEntity)
-
-            return null
-
-        }
-    }
 
     private class UpdateNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
 
