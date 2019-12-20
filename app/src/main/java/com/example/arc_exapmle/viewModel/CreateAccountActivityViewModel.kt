@@ -1,10 +1,8 @@
 package com.example.arc_exapmle.viewModel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.arc_exapmle.ViewModelDelivery
 import com.example.arc_exapmle.user.UserEntity
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
@@ -41,7 +39,11 @@ class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel
                         repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
 
 
-                        toastMutableLiveData.value = ViewModelDelivery("User Created Successfully . Log in again", "intent")
+                        toastMutableLiveData.value =
+                            ViewModelDelivery(
+                                "User Created Successfully . Log in again",
+                                "intent"
+                            )
 
 
 
@@ -55,7 +57,8 @@ class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel
 
 
                     }
-                    else -> toastMutableLiveData.value = ViewModelDelivery("this is odd" , "")
+                    else -> toastMutableLiveData.value =
+                        ViewModelDelivery("this is odd", "")
                 }
 
 
