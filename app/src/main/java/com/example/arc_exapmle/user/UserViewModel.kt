@@ -15,14 +15,14 @@ class UserViewModel(application: Application) :
         allNotes = repository.getAllUsers()
     }
 
-    fun insert(user: UserEntity) {
+/*    fun insert(user: UserEntity) {
 
         val userUI = UserUI(
             user.username, user.user_id
         )
 
         repository.newUser(userUI)
-    }
+    }*/
 
     fun delete(user: UserEntity) {
 
