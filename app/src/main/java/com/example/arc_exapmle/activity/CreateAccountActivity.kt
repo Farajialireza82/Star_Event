@@ -70,15 +70,12 @@ class CreateAccountActivity : AppCompatActivity() {
 
             Toast.makeText(
                 this,
-                it.errorText,
+                it.username,
                 Toast.LENGTH_LONG
             ).show()
 
-            if(it.errorTag == "intent") {
+            if(it.userId == "intent") {
 
-                val mainIntent = Intent(this, LoginActivity::class.java)
-
-                startActivity(mainIntent)
 
                 finish()
             }
