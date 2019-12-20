@@ -33,42 +33,13 @@ public abstract class StarDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext()
                     , StarDatabase.class, "note_database")
                     .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
                     .build();
         }
         return instance;
     }
 
-    private static Callback roomCallback = new Callback() {
-
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            new PopulateDbAsyncTask(instance).execute();
-
-        }
-    };
 
 
-    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
-        private NoteDao noteDao;
-        private UserDao userDao;
 
-        private PopulateDbAsyncTask(StarDatabase db) {
-            noteDao = db.noteDao();
-            userDao = db.userDao();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            noteDao.insert(new NoteEntity("Hint 1 ", "Touch the red button to add notes ", 1 , 82 , 0) );
-            noteDao.insert(new NoteEntity("Hint 2 ", "scroll right or left to delete them ", 2  , 82 , 0 ));
-            noteDao.insert(new NoteEntity("Hint 3 ", "Delete all notes from the ActionBar ", 3 , 82 , 0));
-            userDao.insert(new UserEntity("James_Bond" , 123));
-
-            return null;
-        }
-    }
 
 }
