@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.arc_exapmle.user.UserEntity
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.launch
 
 class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel() {
 
@@ -36,7 +39,12 @@ class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel
                         val newUserEntity =
                             UserEntity(username, numericId.toInt())
 
-                        repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
+                        CoroutineScope(Default).launch {
+
+                            repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
+
+                        }
+
 
 
                         toastMutableLiveData.value =
