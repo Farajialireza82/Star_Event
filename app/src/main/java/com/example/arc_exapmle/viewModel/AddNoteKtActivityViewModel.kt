@@ -44,6 +44,7 @@ class AddNoteKtActivityViewModel(noteRepository: NoteRepository) : ViewModel() {
             else -> {
                 val noteEntity = NoteEntity(title, description, priority, noteRepository.userId)
 
+                CoroutineScope(Default).launch {
 
                     noteRepository.insert(
                         NoteUI(
@@ -54,6 +55,7 @@ class AddNoteKtActivityViewModel(noteRepository: NoteRepository) : ViewModel() {
                             noteEntity.userId
                         )
                     )
+                }
 
 
 
