@@ -10,7 +10,7 @@ import androidx.room.Query
 interface UserDao {
 
     @Insert
-    fun insert(user: UserEntity)
+    suspend fun insert(user: UserEntity)
 
     @Delete
     fun delete(user: UserEntity)
