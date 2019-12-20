@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">رویداد کهکشانی</string>
+    <string name="enter">ورود</string>
+    <string name="id">شماره شناسایی</string>
+    <string name="name">نام</string>
+    <string name="new_to_galaxy_note_create_a_new_account">کاربر جدید هستی؟ حساب تازه بساز</string>
+    <string name="title_activity_create_account">کاربر جدید</string>
+    <string name="welcome">خوش آمدید</string>
+    <string name="enter_your_info">اطلاعات خود را وارد کنید</string>
+    <string name="numeric_id">شماره کاربری</string>
+    <string name="description">توضیحات</string>
+    <string name="priority">اولویت</string>
+    <string name="title">عنوان</string>
+    <string name="_1">1</string>
+
+</resources>

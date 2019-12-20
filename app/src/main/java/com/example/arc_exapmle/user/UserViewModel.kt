@@ -8,7 +8,7 @@ class UserViewModel(application: Application) :
     AndroidViewModel(application) {
 
 
-    private var repository= UserRepository(application)
+    private var repository = UserRepository(application)
     private val allNotes: LiveData<List<UserEntity>>
 
     init {
@@ -18,7 +18,7 @@ class UserViewModel(application: Application) :
     fun insert(user: UserEntity) {
 
         val userUI = UserUI(
-            user.username , user.user_id
+            user.username, user.user_id
         )
 
         repository.newUser(userUI)
@@ -27,7 +27,7 @@ class UserViewModel(application: Application) :
     fun delete(user: UserEntity) {
 
         val userUI = UserUI(
-            user.username , user.user_id
+            user.username, user.user_id
         )
 
         repository.deleteUser(userUI)
@@ -42,7 +42,7 @@ class UserViewModel(application: Application) :
         return repository.getAllUsers()
     }
 
-    fun findUserById(numericId:Int):List<UserEntity>{
+    fun findUserById(numericId: Int): List<UserEntity> {
         return repository.findUserById(numericId)
     }
 

@@ -5,13 +5,18 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
+import com.example.arc_exapmle.factory.AddNoteKtActivityViewModelFactory
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteViewModel
-import com.example.arc_exapmle.note.NoteViewModelFactory
+import com.example.arc_exapmle.factory.NoteViewModelFactory
+import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.user.UserUI
+import com.example.arc_exapmle.viewModel.AddNoteKtActivityViewModel
 
 
 class AddNoteKtActivity : AppCompatActivity() {
@@ -23,11 +28,12 @@ class AddNoteKtActivity : AppCompatActivity() {
 
     }
 
-    private var editTextTitle: EditText? = null
-    private var editTextDescription: EditText? = null
+    private lateinit var editTextTitle: EditText
+    private lateinit var editTextDescription: EditText
     private var numberPickerPriority: NumberPicker? = null
-    private var clicked = false
     private lateinit var user: UserUI
+
+    private lateinit var addNoteKtActivityViewModel: AddNoteKtActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +47,11 @@ class AddNoteKtActivity : AppCompatActivity() {
         editTextDescription = findViewById(R.id.edit_text_description)
         numberPickerPriority = findViewById(R.id.number_picker_priority)
 
+        addNoteKtActivityViewModel = ViewModelProviders.of(
+            this,
+            AddNoteKtActivityViewModelFactory(NoteRepository(application, user.user_id))
+        ).get(AddNoteKtActivityViewModel::class.java)
+
         numberPickerPriority!!.minValue = 1
         numberPickerPriority!!.maxValue = 10
 
@@ -53,36 +64,16 @@ class AddNoteKtActivity : AppCompatActivity() {
 
     private fun saveNote() {
 
-        if(!clicked) {
 
-            clicked = true
+            val title = editTextTitle.text.toString()
 
-            val title = editTextTitle!!.text.toString()
-
-            val description = editTextDescription!!.text.toString()
+            val description = editTextDescription.text.toString()
 
             val priority = numberPickerPriority!!.value
 
-            if (title.trim().isEmpty()) {
+            addNoteKtActivityViewModel.addNote(title , description , priority)
 
-                editTextTitle!!.error = "This field can not remain empty"
-                return
 
-            } else if (description.trim().isEmpty()) {
-
-                editTextDescription!!.error = "This field can not remain empty"
-                return
-
-            }
-
-            val note = NoteEntity(title, description, priority , user.user_id)
-
-            val database = ViewModelProviders.of(this , NoteViewModelFactory(application , user.user_id)).get(NoteViewModel::class.java)
-
-            database.insert(note)
-
-            finish()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -101,6 +92,40 @@ class AddNoteKtActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        addNoteKtActivityViewModel.titleMutableLiveData.observe(this , Observer {
+
+            editTextTitle.error = it
+
+        })
+
+        addNoteKtActivityViewModel.descriptionMutableLiveData.observe(this , Observer {
+
+            editTextDescription.error = it
+
+        })
+
+        addNoteKtActivityViewModel.toastMutableLiveData.observe(this , Observer {
+
+            Toast.makeText(this , it , Toast.LENGTH_SHORT).show()
+
+        })
+
+        addNoteKtActivityViewModel.onSuccessMutableLiveData.observe(this , Observer {
+
+            if(it){
+                finish()
+            }
+
+        })
+
+
+
+
     }
 
 }

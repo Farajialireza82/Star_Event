@@ -1,9 +1,11 @@
-package com.example.arc_exapmle.note;
+package com.example.arc_exapmle.factory;
 
 import android.app.Application;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.arc_exapmle.note.NoteViewModel;
 
 public class NoteViewModelFactory implements ViewModelProvider.Factory {
     private Application mApplication;

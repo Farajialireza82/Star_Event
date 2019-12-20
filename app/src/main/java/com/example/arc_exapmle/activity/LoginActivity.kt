@@ -2,16 +2,17 @@ package com.example.arc_exapmle.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
+import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
-import com.example.arc_exapmle.user.UserViewModel
+import com.example.arc_exapmle.viewModel.LoginActivityViewModel
+import com.example.arc_exapmle.factory.LoginActivityViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,7 +23,9 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var loginButton: Button
 
-    private lateinit var database: UserViewModel
+    private lateinit var userRepository: UserRepository
+
+    private lateinit var loginActivityViewModel: LoginActivityViewModel
 
 
     companion object {
@@ -33,7 +36,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        database = ViewModelProviders.of(this).get(UserViewModel::class.java)
+        userRepository = UserRepository(application)
+
+        loginActivityViewModel = ViewModelProviders.of(
+            this,
+            LoginActivityViewModelFactory(userRepository)
+        ).get(LoginActivityViewModel::class.java)
+
 
         idEditText = findViewById(R.id.idEditText)
         loginButton = findViewById(R.id.enterButton)
@@ -43,43 +52,15 @@ class LoginActivity : AppCompatActivity() {
 
             val loginID = idEditText.text.toString()
 
-            if (loginID.trim() == "") {
-
-                idEditText.error = "this field cannot remain empty"
-
-            } else {
-
-                val numericLoginId = loginID.toInt()
-
-                val users = database.findUserById(numericLoginId)
-
-                Log.i("LoginActivity:OnCreate", users.size.toString())
+            loginActivityViewModel.userEntry(loginID)
 
 
-               if(users.isEmpty()){
-                   idEditText.error = "User not found"
-               }else{
-
-                   val foundedUser = users[0]
-
-                   val foundedUserUI = UserUI(foundedUser.username , foundedUser.user_id)
-
-                   val mainIntent = Intent(this , MainActivity::class.java)
-
-                   mainIntent.putExtra(loginValue , foundedUserUI)
-
-                   startActivity(mainIntent)
-
-               }
-
-
-            }
 
 
         }
         createAccountTextView.setOnClickListener {
 
-            val createAccountIntent = Intent(this@LoginActivity, CreateAccountActivity::class.java)
+            val createAccountIntent = Intent(this, CreateAccountActivity::class.java)
 
             startActivity(createAccountIntent)
 
@@ -87,4 +68,49 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        loginActivityViewModel.idEditTextMutableLiveData.observe(this, Observer {
+
+            idEditText.error = it
+
+        })
+
+
+        loginActivityViewModel.onSuccessMutableLiveData.observe(this, Observer {
+
+            val mainIntent = Intent(this, MainActivity::class.java)
+
+            mainIntent.putExtra(loginValue, UserUI(it.username, it.userId.toInt()))
+
+            startActivity(mainIntent)
+
+        })
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
+
+    }
+
 }
