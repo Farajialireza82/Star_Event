@@ -125,11 +125,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.delete_all_notes -> {
 
-                CoroutineScope(Default).launch {
-
                     mainActivityViewModel.deleteAllNotes()
-
-                }
 
 
             }
