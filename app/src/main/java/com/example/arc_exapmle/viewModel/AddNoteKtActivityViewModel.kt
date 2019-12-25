@@ -2,19 +2,15 @@ package com.example.arc_exapmle.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.note.NoteUI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
-class AddNoteKtActivityViewModel(noteRepository: NoteRepository) : ViewModel() {
-
-    private val noteRepository = noteRepository
+class AddNoteKtActivityViewModel(private val noteRepository: NoteRepository) : ViewModel() {
 
     val titleMutableLiveData: MutableLiveData<String> = MutableLiveData()
     val descriptionMutableLiveData: MutableLiveData<String> = MutableLiveData()
@@ -44,7 +40,7 @@ class AddNoteKtActivityViewModel(noteRepository: NoteRepository) : ViewModel() {
             else -> {
                 val noteEntity = NoteEntity(title, description, priority, noteRepository.userId)
 
-                CoroutineScope(Default).launch {
+                viewModelScope.launch {
 
                     noteRepository.insert(
                         NoteUI(
@@ -58,9 +54,7 @@ class AddNoteKtActivityViewModel(noteRepository: NoteRepository) : ViewModel() {
                 }
 
 
-
-
-                toastMutableLiveData.value = "Note Added Successfully "
+                toastMutableLiveData.value = "Note Added"
 
                 onSuccessMutableLiveData.value = true
             }
