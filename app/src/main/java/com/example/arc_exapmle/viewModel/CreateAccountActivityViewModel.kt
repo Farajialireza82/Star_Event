@@ -3,6 +3,7 @@ package com.example.arc_exapmle.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.arc_exapmle.user.UserEntity
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
@@ -39,7 +40,7 @@ class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel
                         val newUserEntity =
                             UserEntity(username, numericId.toInt())
 
-                        CoroutineScope(Default).launch {
+                       viewModelScope.launch {
 
                             repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
 
