@@ -1,10 +1,8 @@
 package com.example.arc_exapmle.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -19,11 +17,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.arc_exapmle.R
 import com.example.arc_exapmle.factory.MainActivityViewModelFactory
-import com.example.arc_exapmle.factory.NoteViewModelFactory
 import com.example.arc_exapmle.note.*
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity() {
@@ -55,9 +57,11 @@ class MainActivity : AppCompatActivity() {
 
         user = intent.getParcelableExtra(LoginActivity.loginValue)
 
-        val noteRepository = NoteRepository(application , user.user_id)
+        val noteRepository = NoteRepository(application, user.user_id)
 
-        mainActivityViewModel = ViewModelProviders.of(this, MainActivityViewModelFactory(noteRepository)).get(MainActivityViewModel::class.java)
+        mainActivityViewModel =
+            ViewModelProviders.of(this, MainActivityViewModelFactory(noteRepository))
+                .get(MainActivityViewModel::class.java)
 
 
 
@@ -97,7 +101,10 @@ class MainActivity : AppCompatActivity() {
             ) {
                 adapter.getNoteAt(viewHolder.adapterPosition)?.let {
 
+
                     mainActivityViewModel.deleteNote(it)
+
+
                 }
 
             }
@@ -117,7 +124,13 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
 
             R.id.delete_all_notes -> {
-                mainActivityViewModel.deleteAllNotes()
+
+                CoroutineScope(Default).launch {
+
+                    mainActivityViewModel.deleteAllNotes()
+
+                }
+
 
             }
         }
@@ -129,7 +142,15 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        mainActivityViewModel.allNotes.observe(this, Observer {
+
+        mainActivityViewModel.toastMutableLiveData.observe(this, Observer {
+
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+
+
+        })
+
+        mainActivityViewModel.getAllNotes().observe(this, Observer {
 
             val noteUIList: MutableList<NoteUI> = ArrayList()
 
@@ -156,28 +177,15 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        mainActivityViewModel.toastMutableLiveData.observe(this, Observer {
-
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-
-
-        })
-
 
     }
 
-/*    override fun onBackPressed() {
+    override fun onBackPressed() {
         super.onBackPressed()
 
-        val loginIntent = Intent(this , LoginActivity::class.java)
+        Toast.makeText(this, "To go back , press the back button twice", Toast.LENGTH_SHORT).show()
 
-        Log.i("onBackButtonPressed" , "should see loginIntent")
-
-        startActivity(loginIntent)
-
-    }*/
-
-
+    }
 
 
 }
