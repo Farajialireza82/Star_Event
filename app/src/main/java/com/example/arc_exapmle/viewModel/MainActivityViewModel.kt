@@ -1,24 +1,32 @@
 package com.example.arc_exapmle.viewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.note.NoteUI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class MainActivityViewModel(repository: NoteRepository) : ViewModel() {
+class MainActivityViewModel(private var repository: NoteRepository) : ViewModel() {
 
-    private var repository = repository
-    val allNotes: LiveData<List<NoteEntity>> = repository.getAllNotes()
+     private val allNotes = repository.getAllNotes()
 
     val toastMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
     fun deleteNote(noteUI: NoteUI) {
 
-        repository.delete(noteUI)
+        viewModelScope.launch {
+
+            repository.delete(noteUI)
+
+        }
+
+
 
         toastMutableLiveData.value = "Note deleted Successfully"
 
@@ -26,9 +34,23 @@ class MainActivityViewModel(repository: NoteRepository) : ViewModel() {
 
     fun deleteAllNotes() {
 
-        repository.deleteAllNotes()
+
+        viewModelScope.launch {
+
+            repository.deleteAllNotes()
+
+
+        }
+
 
         toastMutableLiveData.value = "All notes deleted"
+
+    }
+
+
+    fun getAllNotes(): LiveData<List<NoteEntity>> {
+
+        return allNotes
 
     }
 
