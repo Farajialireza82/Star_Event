@@ -18,13 +18,6 @@ import com.example.arc_exapmle.viewModel.AddNoteKtActivityViewModel
 
 class AddNoteKtActivity : AppCompatActivity() {
 
-    companion object {
-
-        const val EXTRA_NOTE = "com.example.arc_exapmle.EXTRA_NOTE"
-
-
-    }
-
     private lateinit var editTextTitle: EditText
     private lateinit var editTextDescription: EditText
     private var numberPickerPriority: NumberPicker? = null
