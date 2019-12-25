@@ -13,10 +13,10 @@ interface UserDao {
     suspend fun insert(user: UserEntity)
 
     @Delete
-    fun delete(user: UserEntity)
+    suspend fun delete(user: UserEntity)
 
     @Query("DELETE FROM user_table")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM user_table ")
     fun getAllUsers(): LiveData<List<UserEntity>>
