@@ -4,6 +4,10 @@ import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import com.example.arc_exapmle.StarDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.launch
+import java.util.concurrent.CountDownLatch
 
 class UserRepository(application: Application) {
     private var allUsers: LiveData<List<UserEntity>>
@@ -21,19 +25,27 @@ class UserRepository(application: Application) {
 
         val userEntity = UserEntity(user.username, user.user_id)
 
+
+
         userDao.insert(userEntity)
 
     }
 
     fun deleteUser(user: UserUI) {
 
-        DeleteUserAsyncTask(userDao).execute(user)
+        val userEntity = UserEntity(user.username, user.user_id)
+
+        CoroutineScope(Default).launch {
+
+            userDao.delete(userEntity)
+
+        }
 
     }
 
-    fun deleteAllUsers() {
+    suspend fun deleteAllUsers() {
 
-        DeleteAllUsersAsyncTask(userDao).execute()
+        userDao.deleteAll()
 
     }
 
@@ -63,34 +75,7 @@ class UserRepository(application: Application) {
 
     }*/
 
-    private class DeleteUserAsyncTask(userDaoImpl: UserDao) : AsyncTask<UserUI, Unit, Unit>() {
 
-        private var userDao = userDaoImpl
-
-        override fun doInBackground(vararg params: UserUI): Unit? {
-
-            val userEntity = UserEntity(params[0].username, params[0].user_id)
-            userDao.delete(userEntity)
-
-            return null
-
-        }
-
-    }
-
-    private class DeleteAllUsersAsyncTask(userDaoImpl: UserDao) : AsyncTask<Unit, Unit, Unit>() {
-
-        private var userDao = userDaoImpl
-
-        override fun doInBackground(vararg params: Unit): Unit? {
-
-            userDao.deleteAll()
-
-            return null
-
-        }
-
-    }
 
     private class FindUserById(userDaoImpl: UserDao) : AsyncTask<Int , Unit , List<UserEntity>>(){
 
