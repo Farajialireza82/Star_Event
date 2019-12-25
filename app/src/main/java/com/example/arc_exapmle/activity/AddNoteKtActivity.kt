@@ -11,9 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
 import com.example.arc_exapmle.factory.AddNoteKtActivityViewModelFactory
-import com.example.arc_exapmle.note.NoteEntity
-import com.example.arc_exapmle.note.NoteViewModel
-import com.example.arc_exapmle.factory.NoteViewModelFactory
 import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.AddNoteKtActivityViewModel
