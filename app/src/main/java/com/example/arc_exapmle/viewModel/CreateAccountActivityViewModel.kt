@@ -13,11 +13,11 @@ import kotlinx.coroutines.launch
 
 class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel() {
 
-      private var repository: UserRepository = userRepository
+    private var repository: UserRepository = userRepository
 
     var toastMutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
-      var usernameEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
-      var idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
+    var usernameEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
+    var idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
 
 
@@ -40,7 +40,7 @@ class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel
                         val newUserEntity =
                             UserEntity(username, numericId.toInt())
 
-                       viewModelScope.launch {
+                        viewModelScope.launch {
 
                             repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
 
