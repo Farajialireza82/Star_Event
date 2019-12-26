@@ -21,11 +21,11 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
 
             repository.delete(noteUI)
 
+            toastMutableLiveData.value = "Note deleted Successfully"
         }
 
 
 
-        toastMutableLiveData.value = "Note deleted Successfully"
 
     }
 
@@ -37,10 +37,10 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
             repository.deleteAllNotes()
 
 
+            toastMutableLiveData.value = "All notes deleted"
         }
 
 
-        toastMutableLiveData.value = "All notes deleted"
 
     }
 

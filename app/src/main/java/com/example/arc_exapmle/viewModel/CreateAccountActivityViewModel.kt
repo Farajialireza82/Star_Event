@@ -20,15 +20,15 @@ class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel
     var idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
 
-
-
-    fun createNewAccount(username: String, numericId: String){
+    fun createNewAccount(username: String, numericId: String) {
 
         when {
 
-            username.trim() == "" -> usernameEditTextMutableLiveData.value = "This field cannot remain empty"
+            username.trim() == "" -> usernameEditTextMutableLiveData.value =
+                "This field cannot remain empty"
 
-            numericId.trim() == "" -> idEditTextMutableLiveData.value = "This field cannot remain empty"
+            numericId.trim() == "" -> idEditTextMutableLiveData.value =
+                "This field cannot remain empty"
 
             else -> {
 
@@ -42,18 +42,19 @@ class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel
 
                         viewModelScope.launch {
 
-                            repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
-
-                        }
-
-
-
-                        toastMutableLiveData.value =
-                            ViewModelDelivery(
-                                "User Created Successfully . Log in again",
-                                "intent"
+                            repository.newUser(
+                                UserUI(
+                                    newUserEntity.username,
+                                    newUserEntity.user_id
+                                )
                             )
 
+                            toastMutableLiveData.value =
+                                ViewModelDelivery(
+                                    "User Created Successfully . Log in again",
+                                    "intent"
+                                )
+                        }
 
 
                     }

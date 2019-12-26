@@ -51,10 +51,13 @@ class AddNoteKtActivityViewModel(private val noteRepository: NoteRepository) : V
                             noteEntity.userId
                         )
                     )
+
+                    toastMutableLiveData.value = "Note Added"
+
+
                 }
 
 
-                toastMutableLiveData.value = "Note Added"
 
                 onSuccessMutableLiveData.value = true
             }
