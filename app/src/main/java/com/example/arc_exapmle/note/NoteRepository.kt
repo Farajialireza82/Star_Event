@@ -9,14 +9,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
 
-class NoteRepository(application: Application, val userId: Int) {
-    private var noteDao: NoteDao
-
-    init {
-        val dataBase: StarDatabase =
-            StarDatabase.getInstance(application)
-        noteDao = dataBase.noteDao()
-    }
+class NoteRepository(dataBase: StarDatabase, private val userIdNumber: Int) {
+    private var noteDao: NoteDao = dataBase.noteDao()
+    var userId: Int = userIdNumber
 
 
     suspend fun insert(note: NoteUI) {
@@ -32,19 +27,6 @@ class NoteRepository(application: Application, val userId: Int) {
         )
 
 
-    }
-
-    suspend fun update(note: NoteUI) {
-
-        val noteEntity = NoteEntity(
-            note.title,
-            note.description,
-            note.priority,
-            note.userID,
-            note.id
-        )
-
-        noteDao.update(noteEntity)
     }
 
 
@@ -71,7 +53,7 @@ class NoteRepository(application: Application, val userId: Int) {
 
     }
 
-      fun getAllNotes(): LiveData<List<NoteEntity>> {
+    fun getAllNotes(): LiveData<List<NoteEntity>> {
         return if (userId == 36255528) {
 
             noteDao.getEveryNoteThereIs()
@@ -83,20 +65,6 @@ class NoteRepository(application: Application, val userId: Int) {
 
         }
 
-    }
-
-
-    private class UpdateNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
-
-        private var noteDao: NoteDao = noteDaoNew
-
-        override fun doInBackground(vararg params: NoteUI): Unit? {
-
-
-
-            return null
-
-        }
     }
 
 
