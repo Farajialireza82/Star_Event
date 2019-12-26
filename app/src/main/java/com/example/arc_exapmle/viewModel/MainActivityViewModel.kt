@@ -7,14 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.note.NoteUI
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class MainActivityViewModel(private var repository: NoteRepository) : ViewModel() {
 
-     private val allNotes = repository.getAllNotes()
+    private val allNotes = repository.getAllNotes()
 
     val toastMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
