@@ -42,7 +42,6 @@ class LoginActivityViewModel(userRepository: UserRepository) : ViewModel() {
                         foundedUser.username,
                         foundedUser.user_id.toString()
                     )
-                    delivery.condition = true
 
                     onSuccessMutableLiveData.value =
                         delivery
