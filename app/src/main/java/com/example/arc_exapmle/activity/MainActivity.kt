@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.room.CoroutinesRoom
 import com.example.arc_exapmle.R
+import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.factory.MainActivityViewModelFactory
 import com.example.arc_exapmle.note.*
 import com.example.arc_exapmle.user.UserUI
@@ -40,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var user: UserUI
 
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,11 +58,19 @@ class MainActivity : AppCompatActivity() {
 
         user = intent.getParcelableExtra(LoginActivity.loginValue)
 
-        val noteRepository = NoteRepository(application, user.user_id)
 
         mainActivityViewModel =
-            ViewModelProviders.of(this, MainActivityViewModelFactory(noteRepository))
+            ViewModelProviders.of(
+                this,
+                MainActivityViewModelFactory(
+                    NoteRepository(
+                        StarDatabase.getInstance(this),
+                        user.user_id
+                    )
+                )
+            )
                 .get(MainActivityViewModel::class.java)
+
 
 
 
@@ -113,28 +122,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val menuInflater = menuInflater
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-
-            R.id.delete_all_notes -> {
-
-                    mainActivityViewModel.deleteAllNotes()
-
-
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-
     override fun onResume() {
         super.onResume()
 
@@ -176,10 +163,39 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        mainActivityViewModel.toastMutableLiveData.removeObservers(this)
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val menuInflater = menuInflater
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+
+            R.id.delete_all_notes -> {
+
+                mainActivityViewModel.deleteAllNotes()
+
+
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
 
-        Toast.makeText(this, "To go back , press the back button twice", Toast.LENGTH_SHORT).show()
+        finish()
 
     }
 

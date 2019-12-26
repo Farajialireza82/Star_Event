@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
+import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.viewModel.CreateAccountActivityViewModel
 import com.example.arc_exapmle.factory.CreateAccountActivityViewModelFactory
@@ -26,11 +27,12 @@ class CreateAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
-        val repository = UserRepository(application)
+        val userRepository = UserRepository(StarDatabase.getInstance(this))
 
         createAccountActivityViewModel =
-            ViewModelProviders.of(this ,
-                CreateAccountActivityViewModelFactory(repository)
+            ViewModelProviders.of(
+                this,
+                CreateAccountActivityViewModelFactory(userRepository)
             ).get(CreateAccountActivityViewModel::class.java)
 
 
@@ -54,19 +56,19 @@ class CreateAccountActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        createAccountActivityViewModel.usernameEditTextMutableLiveData.observe(this , Observer {
+        createAccountActivityViewModel.usernameEditTextMutableLiveData.observe(this, Observer {
 
             usernameEditText.error = it
 
         })
 
-        createAccountActivityViewModel.idEditTextMutableLiveData.observe(this , Observer {
+        createAccountActivityViewModel.idEditTextMutableLiveData.observe(this, Observer {
 
             numericIdEditText.error = it
 
         })
 
-        createAccountActivityViewModel.toastMutableLiveData.observe(this , Observer {
+        createAccountActivityViewModel.toastMutableLiveData.observe(this, Observer {
 
             Toast.makeText(
                 this,
@@ -74,7 +76,7 @@ class CreateAccountActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
 
-            if(it.userId == "intent") {
+            if (it.userId == "intent") {
 
 
                 finish()

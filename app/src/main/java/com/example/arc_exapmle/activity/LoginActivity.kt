@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
+import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.LoginActivityViewModel
@@ -23,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var loginButton: Button
 
-    private lateinit var userRepository: UserRepository
 
     private lateinit var loginActivityViewModel: LoginActivityViewModel
 
@@ -36,11 +36,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        userRepository = UserRepository(application)
 
         loginActivityViewModel = ViewModelProviders.of(
             this,
-            LoginActivityViewModelFactory(userRepository)
+            LoginActivityViewModelFactory(UserRepository(StarDatabase.getInstance(this)))
         ).get(LoginActivityViewModel::class.java)
 
 
@@ -53,8 +52,6 @@ class LoginActivity : AppCompatActivity() {
             val loginID = idEditText.text.toString()
 
             loginActivityViewModel.userEntry(loginID)
-
-
 
 
         }
@@ -91,25 +88,12 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
-
-    }
-
     override fun onStop() {
         super.onStop()
 
         loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
 
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
+        loginActivityViewModel.idEditTextMutableLiveData.removeObservers(this)
 
     }
 
