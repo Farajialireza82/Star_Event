@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class NoteRepository(dataBase: StarDatabase, private val userIdNumber: Int) {
     private var noteDao: NoteDao = dataBase.noteDao()
-    var userId: Int = userIdNumber
+    val userId: Int = userIdNumber
 
 
     suspend fun insert(note: NoteUI) {
