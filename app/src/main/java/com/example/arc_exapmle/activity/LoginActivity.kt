@@ -39,8 +39,8 @@ class LoginActivity : AppCompatActivity() {
 
         loginActivityViewModel = ViewModelProviders.of(
             this,
-            LoginActivityViewModelFactory(UserRepository(StarDatabase.getInstance(this)))
-        ).get(LoginActivityViewModel::class.java)
+            LoginActivityViewModelFactory(UserRepository(StarDatabase.getInstance(this).userDao())))
+            .get(LoginActivityViewModel::class.java)
 
 
         idEditText = findViewById(R.id.idEditText)

@@ -27,7 +27,7 @@ class CreateAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
-        val userRepository = UserRepository(StarDatabase.getInstance(this))
+        val userRepository = UserRepository(StarDatabase.getInstance(this).userDao())
 
         createAccountActivityViewModel =
             ViewModelProviders.of(
