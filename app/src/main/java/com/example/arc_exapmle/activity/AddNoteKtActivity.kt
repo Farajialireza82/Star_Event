@@ -111,9 +111,7 @@ class AddNoteKtActivity : AppCompatActivity() {
 
         addNoteKtActivityViewModel.onSuccessMutableLiveData.observe(this, Observer {
 
-            if (it) {
                 finish()
-            }
 
         })
 
