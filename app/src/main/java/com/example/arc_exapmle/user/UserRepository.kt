@@ -7,9 +7,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
 
-class UserRepository(database: StarDatabase) {
-    private var userDao: UserDao = database.userDao()
-    private var allUsers: LiveData<List<UserEntity>> = userDao.getAllUsers()
+class UserRepository(cUserDao: UserDao) {
+    private var userDao = cUserDao
+    private var allUsers = userDao.getAllUsers()
 
 
     suspend fun newUser(user: UserUI) {
@@ -24,7 +24,7 @@ class UserRepository(database: StarDatabase) {
 
         val userEntity = UserEntity(user.username, user.user_id)
 
-            userDao.delete(userEntity)
+        userDao.delete(userEntity)
 
     }
 
@@ -42,7 +42,6 @@ class UserRepository(database: StarDatabase) {
 
         return FindUserById(userDao).execute(numericId).get()
     }
-
 
 
     private class FindUserById(userDao: UserDao) : AsyncTask<Int, Unit, List<UserEntity>>() {
