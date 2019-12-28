@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                 this,
                 MainActivityViewModelFactory(
                     NoteRepository(
-                        StarDatabase.getInstance(this),
+                        StarDatabase.getInstance(this).noteDao(),
                         user.user_id
                     )
                 )
