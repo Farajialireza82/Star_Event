@@ -43,7 +43,7 @@ class AddNoteKtActivity : AppCompatActivity() {
         addNoteKtActivityViewModel = ViewModelProviders.of(
             this,
             AddNoteKtActivityViewModelFactory(
-                NoteRepository(StarDatabase.getInstance(this) , user.user_id))
+                NoteRepository(StarDatabase.getInstance(this).noteDao() , user.user_id))
         ).get(AddNoteKtActivityViewModel::class.java)
 
         numberPickerPriority!!.minValue = 1
