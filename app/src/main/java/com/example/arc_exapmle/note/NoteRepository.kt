@@ -9,8 +9,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
 
-class NoteRepository(dataBase: StarDatabase, private val userIdNumber: Int) {
-    private var noteDao: NoteDao = dataBase.noteDao()
+class NoteRepository(cNoteDao: NoteDao, private val userIdNumber: Int) {
+
+    private val noteDao = cNoteDao
     val userId: Int = userIdNumber
 
 
