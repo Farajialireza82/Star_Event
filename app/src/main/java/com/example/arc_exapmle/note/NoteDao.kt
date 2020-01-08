@@ -2,6 +2,7 @@ package com.example.arc_exapmle.note
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
  interface NoteDao {
@@ -19,10 +20,10 @@ import androidx.room.*
     suspend fun deleteAll()
 
     @Query("SELECT * FROM note_table WHERE user = :userID")
-    fun getAllNotes(userID: Int): LiveData<List<NoteEntity>>
+    fun getAllNotes(userID: Int): Flow<List<NoteEntity>>
 
    @Query("SELECT * FROM note_table")
-    fun getEveryNoteThereIs(): LiveData<List<NoteEntity>>
+    fun getEveryNoteThereIs(): Flow<List<NoteEntity>>
 
 
 
