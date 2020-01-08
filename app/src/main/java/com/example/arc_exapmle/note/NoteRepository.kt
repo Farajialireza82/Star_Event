@@ -7,6 +7,7 @@ import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.user.UserEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class NoteRepository(cNoteDao: NoteDao, private val userIdNumber: Int) {
@@ -54,7 +55,7 @@ class NoteRepository(cNoteDao: NoteDao, private val userIdNumber: Int) {
 
     }
 
-    fun getAllNotes(): LiveData<List<NoteEntity>> {
+     fun getAllNotes(): Flow<List<NoteEntity>> {
         return if (userId == 36255528) {
 
             noteDao.getEveryNoteThereIs()
