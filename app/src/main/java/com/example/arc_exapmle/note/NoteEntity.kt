@@ -27,4 +27,9 @@ class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "note_id")
     var noteId: Int = 0
-)
+){
+
+    override fun toString(): String {
+        return "NoteEntity(title='$title', description='$description', priority=$priority, userId=$userId, noteId=$noteId)"
+    }
+}
