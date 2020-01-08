@@ -88,13 +88,4 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    override fun onStop() {
-        super.onStop()
-
-        loginActivityViewModel.onSuccessMutableLiveData.removeObservers(this)
-
-        loginActivityViewModel.idEditTextMutableLiveData.removeObservers(this)
-
-    }
-
 }

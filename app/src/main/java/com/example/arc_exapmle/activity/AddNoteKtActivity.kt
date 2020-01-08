@@ -13,7 +13,6 @@ import com.example.arc_exapmle.R
 import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.factory.AddNoteKtActivityViewModelFactory
 import com.example.arc_exapmle.note.NoteRepository
-import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.AddNoteKtActivityViewModel
 

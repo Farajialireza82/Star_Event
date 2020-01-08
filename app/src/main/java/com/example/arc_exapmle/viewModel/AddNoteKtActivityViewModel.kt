@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.note.NoteUI
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
 
 class AddNoteKtActivityViewModel(private val noteRepository: NoteRepository) : ViewModel() {

@@ -2,10 +2,6 @@ package com.example.arc_exapmle.user
 
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
-import com.example.arc_exapmle.StarDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Default
-import kotlinx.coroutines.launch
 
 class UserRepository(cUserDao: UserDao) {
     private var userDao = cUserDao

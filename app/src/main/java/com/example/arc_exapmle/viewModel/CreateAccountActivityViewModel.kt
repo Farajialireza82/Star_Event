@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.arc_exapmle.user.UserEntity
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
 
 class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel() {

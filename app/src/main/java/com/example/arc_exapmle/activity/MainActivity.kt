@@ -1,6 +1,5 @@
 package com.example.arc_exapmle.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.room.CoroutinesRoom
 import com.example.arc_exapmle.R
 import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.factory.MainActivityViewModelFactory
@@ -23,11 +21,6 @@ import com.example.arc_exapmle.note.*
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Default
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity() {
@@ -163,13 +156,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onStop() {
-        super.onStop()
-
-        mainActivityViewModel.toastMutableLiveData.removeObservers(this)
-
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val menuInflater = menuInflater
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -192,12 +178,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
 
-        finish()
-
-    }
 
 
 }

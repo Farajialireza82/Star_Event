@@ -1,17 +1,14 @@
 package com.example.arc_exapmle.viewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.note.NoteUI
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel(private var repository: NoteRepository) : ViewModel() {
 
-    private val allNotes = repository.getAllNotes()
 
     val toastMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
@@ -23,8 +20,6 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
 
             toastMutableLiveData.value = "Note deleted Successfully"
         }
-
-
 
 
     }
@@ -41,13 +36,13 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
         }
 
 
-
     }
 
 
     fun getAllNotes(): LiveData<List<NoteEntity>> {
 
-        return allNotes
+
+        return repository.getAllNotes().asLiveData()
 
     }
 
