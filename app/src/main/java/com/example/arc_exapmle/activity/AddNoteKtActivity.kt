@@ -33,7 +33,7 @@ class AddNoteKtActivity : AppCompatActivity() {
 
         val intent = intent
 
-        user = intent.getParcelableExtra(LoginActivity.loginValue)
+        user = intent.getParcelableExtra(LoginActivity2nd.loginValue)
 
         editTextTitle = findViewById(R.id.edit_text_Title)
         editTextDescription = findViewById(R.id.edit_text_description)

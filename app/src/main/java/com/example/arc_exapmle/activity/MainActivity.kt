@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        user = intent.getParcelableExtra(LoginActivity.loginValue)
+        user = intent.getParcelableExtra(LoginActivity2nd.loginValue)
 
 
         mainActivityViewModel =
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
             val addIntent = Intent(this, AddNoteKtActivity::class.java)
 
-            addIntent.putExtra(LoginActivity.loginValue, user)
+            addIntent.putExtra(LoginActivity2nd.loginValue, user)
 
             startActivity(addIntent)
 
