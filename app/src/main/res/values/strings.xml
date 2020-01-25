@@ -4,7 +4,7 @@
     <string name="name">Name</string>
     <string name="enter_your_info">Enter your info</string>
     <string name="welcome">Welcome</string>
-    <string name="id">Id</string>
+    <string name="id">Numeric Id</string>
     <string name="new_to_galaxy_note_create_a_new_account">New to Galaxy Note? Create a new account</string>
     <string name="enter">Enter</string>
     <string name="numeric_id">Numeric Id</string>
@@ -12,4 +12,12 @@
     <string name="description">description</string>
     <string name="priority">priority</string>
     <string name="_1">1</string>
+    <string name="change_user_name">Change user name</string>
+    <string name="hello_developer">Hello Developer!</string>
+    <string name="login">Login</string>
+    <string name="you_are_not_a_member_register">You are not a member? <b><font fgcolor='#DA4E3C'>Register.</font></b></string>
+    <string name="nice_to_see_you">Nice to see you again!</string>
+    <string name="enter_your_information">Enter Your Information</string>
+    <string name="username">Username</string>
+    <string name="create">Create</string>
 </resources>

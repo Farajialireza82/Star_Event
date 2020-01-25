@@ -13,5 +13,13 @@
     <string name="priority">اولویت</string>
     <string name="title">عنوان</string>
     <string name="_1">1</string>
+    <string name="change_user_name">تغییر نام کاربری</string>
+    <string name="hello_developer">خوش آمدید کاربر گرامی</string>
+    <string name="login">Login</string>
+    <string name="you_are_not_a_member_register">حساب کاربری نداری؟ <b><font fgcolor='#3CDA85'> یکی بساز !</font></b></string>
+    <string name="nice_to_see_you">وقت بخیر</string>
+    <string name="enter_your_information">اطلاعاتت رو وارد کنn</string>
+    <string name="username">نام کاربری</string>
+    <string name="create">بساز!</string>
 
 </resources>

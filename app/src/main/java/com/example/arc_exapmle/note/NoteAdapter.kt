@@ -15,7 +15,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
 
         val itemView: View? = LayoutInflater.from(parent.context)
-            .inflate(R.layout.note_item, parent, false)
+            .inflate(R.layout.updated_viewholder, parent, false)
 
         return NoteHolder(itemView)
     }
