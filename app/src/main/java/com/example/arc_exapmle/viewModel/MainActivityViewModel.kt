@@ -4,13 +4,17 @@ import androidx.lifecycle.*
 import com.example.arc_exapmle.note.NoteEntity
 import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.note.NoteUI
+import com.example.arc_exapmle.user.UserEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel(private var repository: NoteRepository) : ViewModel() {
 
 
     val toastMutableLiveData: MutableLiveData<String> = MutableLiveData()
+
+    val notesListSingleLiveEvent:SingleLiveEvent<List<UserEntity>> = SingleLiveEvent()
 
     fun deleteNote(noteUI: NoteUI) {
 
@@ -39,12 +43,18 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
     }
 
 
-    fun getAllNotes(): LiveData<List<NoteEntity>> {
+    fun getAllNotes(): Flow<List<NoteEntity>> {
 
 
-        return repository.getAllNotes().asLiveData()
+        return repository.getAllNotes()
 
     }
+
+   /* fun getAllNotesDistinctUntilChanged(): Flow<List<NoteEntity>> {
+
+        return repository.getAllNotesDistinctUntilChanged()
+
+    }*/
 
 
 }
