@@ -2,13 +2,16 @@ package com.example.arc_exapmle.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +24,8 @@ import com.example.arc_exapmle.note.*
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity() {
@@ -126,7 +131,39 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        mainActivityViewModel.getAllNotes().observe(this, Observer {
+
+
+
+
+        lifecycleScope.launch {
+
+             mainActivityViewModel.getAllNotes().collect  {
+
+                 val noteUIList: MutableList<NoteUI> = ArrayList()
+
+
+
+                 for (i in it.indices) {
+
+                     val noteEntity = it[i]
+
+                     noteUIList.add(
+                         NoteUI(
+                             noteEntity.noteId,
+                             noteEntity.title,
+                             noteEntity.description,
+                             noteEntity.priority,
+                             user.user_id
+                         )
+                     )
+
+                 }
+
+                 adapter.setNote(noteUIList)
+             }
+        }
+
+        /*mainActivityViewModel.getAllNotes().observe(this, Observer {
 
             val noteUIList: MutableList<NoteUI> = ArrayList()
 
@@ -151,7 +188,7 @@ class MainActivity : AppCompatActivity() {
             adapter.setNote(noteUIList)
 
 
-        })
+        })*/
 
 
     }
@@ -177,8 +214,6 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
-
-
 
 
 }
