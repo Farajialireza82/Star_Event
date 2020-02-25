@@ -134,16 +134,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        val noteUIList: MutableList<NoteUI> = ArrayList()
 
         lifecycleScope.launch {
 
-             mainActivityViewModel.getAllNotes().collect  {
+            mainActivityViewModel.getAllNotes().collect  {
 
-                 val noteUIList: MutableList<NoteUI> = ArrayList()
-
-
-
-                 for (i in it.indices) {
+                for (i in it.indices) {
 
                      val noteEntity = it[i]
 
@@ -159,37 +156,9 @@ class MainActivity : AppCompatActivity() {
 
                  }
 
-                 adapter.setNote(noteUIList)
              }
         }
-
-        /*mainActivityViewModel.getAllNotes().observe(this, Observer {
-
-            val noteUIList: MutableList<NoteUI> = ArrayList()
-
-
-
-            for (i in it!!.indices) {
-
-                val noteEntity = it[i]
-
-                noteUIList.add(
-                    NoteUI(
-                        noteEntity.noteId,
-                        noteEntity.title,
-                        noteEntity.description,
-                        noteEntity.priority,
-                        user.user_id
-                    )
-                )
-
-            }
-
-            adapter.setNote(noteUIList)
-
-
-        })*/
-
+        adapter.setNote(noteUIList)
 
     }
 
