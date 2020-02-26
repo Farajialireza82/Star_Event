@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel.noteUIListMutableLiveData.observe(this, Observer {
 
-            adapter.setNote(it)
+            adapter.submitList(it)
 
         })
 
