@@ -6,15 +6,17 @@ import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.note.NoteUI
 import com.example.arc_exapmle.user.UserEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivityViewModel(private var repository: NoteRepository) : ViewModel() {
 
-
     val toastMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
-    val notesListSingleLiveEvent:SingleLiveEvent<List<UserEntity>> = SingleLiveEvent()
+    val noteUIListMutableLiveData:MutableLiveData<List<NoteUI>> = MutableLiveData()
 
     fun deleteNote(noteUI: NoteUI) {
 
@@ -22,7 +24,6 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
 
             repository.delete(noteUI)
 
-            toastMutableLiveData.value = "Note deleted Successfully"
         }
 
 
@@ -36,25 +37,46 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
             repository.deleteAllNotes()
 
 
+
             toastMutableLiveData.value = "All notes deleted"
         }
 
 
     }
 
+    fun getAllNotes() {
 
-    fun getAllNotes(): Flow<List<NoteEntity>> {
+        viewModelScope.launch {
 
 
-        return repository.getAllNotes()
+            repository.getAllNotes().distinctUntilChanged().collect() {
+
+                    val noteUIList: MutableList<NoteUI> = ArrayList()
+
+                for (i in it.indices) {
+
+                    val noteEntity = it[i]
+
+                    noteUIList.add(
+                        NoteUI(
+                            noteEntity.noteId,
+                            noteEntity.title,
+                            noteEntity.description,
+                            noteEntity.priority,
+                            repository.userId
+                        )
+                    )
+
+                }
+                noteUIListMutableLiveData.value = noteUIList
+
+            }
+
+
+        }
+        }
+
+
+
 
     }
-
-   /* fun getAllNotesDistinctUntilChanged(): Flow<List<NoteEntity>> {
-
-        return repository.getAllNotesDistinctUntilChanged()
-
-    }*/
-
-
-}
