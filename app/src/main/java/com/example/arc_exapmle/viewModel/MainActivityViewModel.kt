@@ -16,7 +16,7 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
 
     val toastMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
-    val noteUIListMutableLiveData:MutableLiveData<List<NoteUI>> = MutableLiveData()
+    val noteUIListMutableLiveData: MutableLiveData<List<NoteUI>> = MutableLiveData()
 
     fun deleteNote(noteUI: NoteUI) {
 
@@ -51,11 +51,9 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
 
             repository.getAllNotes().distinctUntilChanged().collect() {
 
-                    val noteUIList: MutableList<NoteUI> = ArrayList()
+                val noteUIList: MutableList<NoteUI> = ArrayList()
 
-                for (i in it.indices) {
-
-                    val noteEntity = it[i]
+                it.iterator().forEach { noteEntity ->
 
                     noteUIList.add(
                         NoteUI(
@@ -74,9 +72,7 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
 
 
         }
-        }
-
-
-
-
     }
+
+
+}
