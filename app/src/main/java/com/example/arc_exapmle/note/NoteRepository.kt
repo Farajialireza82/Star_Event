@@ -9,6 +9,7 @@ import com.example.arc_exapmle.user.UserEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class NoteRepository(cNoteDao: NoteDao, private val userIdNumber: Int) {
@@ -61,11 +62,6 @@ class NoteRepository(cNoteDao: NoteDao, private val userIdNumber: Int) {
 
             return noteDao.getAllNotes(userId)
         }
-    /*fun getAllNotesDistinctUntilChanged(): Flow<List<NoteEntity>> {
-
-
-        return noteDao.getAllNotesDistinctUntilChanged(userId)
-    }*/
 
     }
 
