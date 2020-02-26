@@ -2,14 +2,12 @@ package com.example.arc_exapmle.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -24,6 +22,7 @@ import com.example.arc_exapmle.note.*
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -127,40 +126,36 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel.toastMutableLiveData.observe(this, Observer {
 
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-
-
-        })
-
-
+        }
+        )
 
 
         val noteUIList: MutableList<NoteUI> = ArrayList()
 
         lifecycleScope.launch {
 
-            mainActivityViewModel.getAllNotes().collect  {
+            mainActivityViewModel.getAllNotes().collect() {
 
-                for (i in it.indices) {
+                it.iterator().forEach { noteEntity ->
 
-                     val noteEntity = it[i]
+                    noteUIList.add(
+                        NoteUI(
+                            noteEntity.noteId,
+                            noteEntity.title,
+                            noteEntity.description,
+                            noteEntity.priority,
+                            user.user_id
+                        )
+                    )
+                }
 
-                     noteUIList.add(
-                         NoteUI(
-                             noteEntity.noteId,
-                             noteEntity.title,
-                             noteEntity.description,
-                             noteEntity.priority,
-                             user.user_id
-                         )
-                     )
-
-                 }
-
-             }
+            }
         }
+
         adapter.setNote(noteUIList)
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val menuInflater = menuInflater
