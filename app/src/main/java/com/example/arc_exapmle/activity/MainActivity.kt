@@ -129,30 +129,15 @@ class MainActivity : AppCompatActivity() {
         }
         )
 
+        mainActivityViewModel.getAllNotes()
 
-        val noteUIList: MutableList<NoteUI> = ArrayList()
+        mainActivityViewModel.noteUIListMutableLiveData.observe(this, Observer {
 
-        lifecycleScope.launch {
+            adapter.setNote(it)
 
-            mainActivityViewModel.getAllNotes().collect() {
+        })
 
-                it.iterator().forEach { noteEntity ->
 
-                    noteUIList.add(
-                        NoteUI(
-                            noteEntity.noteId,
-                            noteEntity.title,
-                            noteEntity.description,
-                            noteEntity.priority,
-                            user.user_id
-                        )
-                    )
-                }
-
-            }
-        }
-
-        adapter.setNote(noteUIList)
 
     }
 
