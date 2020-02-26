@@ -59,11 +59,10 @@ class NoteRepository(cNoteDao: NoteDao, private val userIdNumber: Int) {
 
     fun getAllNotes(): Flow<List<NoteEntity>> {
 
-
-            return noteDao.getAllNotes(userId)
-        }
-
+        return noteDao.getAllNotes(userId)
     }
+
+}
 
 
 
