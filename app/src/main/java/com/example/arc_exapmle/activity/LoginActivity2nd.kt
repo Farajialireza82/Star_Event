@@ -59,37 +59,37 @@ class LoginActivity2nd : AppCompatActivity() {
 
     @SuppressLint("ResourceType")
     private fun loginButtonStyle() {
-        if (idEditText!!.text.length > 0) {
-            if (!login_button!!.isFocusable) {
-                login_button!!.isFocusable = true
-                login_button!!.isClickable = true
-                login_button_card_view!!.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)))
+        if (idEditText.text.isNotEmpty()) {
+            if (!login_button.isFocusable) {
+                login_button.isFocusable = true
+                login_button.isClickable = true
+                login_button_card_view.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)))
                 val outValue = TypedValue()
                 theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
-                login_button!!.setBackgroundResource(outValue.resourceId)
+                login_button.setBackgroundResource(outValue.resourceId)
             }
         } else {
-            if (login_button!!.isFocusable) {
-                login_button!!.isFocusable = false
-                login_button!!.isClickable = false
-                login_button_card_view!!.setCardBackgroundColor(Color.parseColor(getString(R.color.colorCardViewBackground)))
-                login_button!!.setBackgroundResource(0)
+            if (login_button.isFocusable) {
+                login_button.isFocusable = false
+                login_button.isClickable = false
+                login_button_card_view.setCardBackgroundColor(Color.parseColor(getString(R.color.colorCardViewBackground)))
+                login_button.setBackgroundResource(0)
             }
         }
     }
 
     private fun loginOnClick() {
-        login_button!!.setOnClickListener { view ->
-            if (idEditText!!.text.length > 0) {
+        login_button.setOnClickListener { view ->
+            if (idEditText.text.isNotEmpty()) {
 
-                loginActivityViewModel.userEntry(idEditText!!.text.toString())
+                loginActivityViewModel.userEntry(idEditText.text.toString())
 
             }
         }
     }
 
     private fun inputChange() {
-        idEditText!!.addTextChangedListener(object : TextWatcher {
+        idEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 charSequence: CharSequence,
                 start: Int,
