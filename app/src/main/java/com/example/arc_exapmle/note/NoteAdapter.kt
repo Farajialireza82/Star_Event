@@ -21,7 +21,7 @@ companion object {
             }
 
             override fun areContentsTheSame(oldItem: NoteUI, newItem: NoteUI): Boolean {
-                return oldItem.title == newItem.title && oldItem.description == newItem.description && oldItem.priority == newItem.priority
+                return oldItem == newItem
             }
         }
 }
