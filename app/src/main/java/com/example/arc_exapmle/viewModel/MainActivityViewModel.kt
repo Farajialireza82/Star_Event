@@ -53,17 +53,9 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
 
                 val noteUIList: MutableList<NoteUI> = ArrayList()
 
-                it.iterator().forEach { noteEntity ->
+                it.map { noteEntity ->
 
-                    noteUIList.add(
-                        NoteUI(
-                            noteEntity.noteId,
-                            noteEntity.title,
-                            noteEntity.description,
-                            noteEntity.priority,
-                            repository.userId
-                        )
-                    )
+                    noteUIList.add(noteEntityToNoteUI(noteEntity))
 
                 }
                 noteUIListMutableLiveData.value = noteUIList
@@ -72,6 +64,16 @@ class MainActivityViewModel(private var repository: NoteRepository) : ViewModel(
 
 
         }
+    }
+
+    private fun noteEntityToNoteUI(oldNoteEntity: NoteEntity):NoteUI{
+        return   NoteUI(
+            oldNoteEntity.noteId,
+            oldNoteEntity.title,
+            oldNoteEntity.description,
+            oldNoteEntity.priority,
+            repository.userId
+        )
     }
 
 
