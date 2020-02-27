@@ -3,134 +3,66 @@ package com.example.arc_exapmle.note
 import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.user.UserEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
-class NoteRepository(application: Application , val userId : Int) {
-    private var allNotes: LiveData<List<NoteEntity>>
-    private var noteDao: NoteDao
+class NoteRepository(cNoteDao: NoteDao, private val userIdNumber: Int) {
 
-    init {
-        val dataBase: StarDatabase =
-            StarDatabase.getInstance(application)
-        noteDao = dataBase.noteDao()
-        allNotes = noteDao.getAllNotes(userId)
-    }
-
-
-    fun insert(note: NoteUI) {
-
-        InsertNoteAsyncTask(noteDao).execute(note)
-
-    }
-
-    fun update(note: NoteUI) {
-
-        UpdateNoteAsyncTask(noteDao).execute(note)
-
-    }
+    private val noteDao = cNoteDao
+    val userId: Int = userIdNumber
 
 
-    fun delete(note: NoteUI) {
+    suspend fun insert(note: NoteUI) {
 
-        DeleteNoteAsyncTask(noteDao).execute(note)
-
-    }
-
-    fun deleteAllNotes() {
-
-        DeleteAllNotesAsyncTask(noteDao).execute()
-
-    }
-
-    fun getAllNotes(): LiveData<List<NoteEntity>> {
-        return if(userId == 36255528){
-
-            noteDao.getEveryNoteThereIs()
-
-        }else{
-
-            allNotes
-
-        }
-
-    }
-
-    private class InsertNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
-
-        private var noteDao: NoteDao = noteDaoNew
-
-        override fun doInBackground(vararg params: NoteUI): Unit? {
-
-            val noteEntity = NoteEntity(
-                params[0].title,
-                params[0].description,
-                params[0].priority,
-                params[0].userID,
-                params[0].id
+        noteDao.insert(
+            NoteEntity(
+                note.title,
+                note.description,
+                note.priority,
+                note.userID,
+                note.id
             )
+        )
 
-            noteDao.insert(noteEntity)
 
-            return null
-
-        }
     }
 
-    private class UpdateNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
 
-        private var noteDao: NoteDao = noteDaoNew
+    suspend fun delete(note: NoteUI) {
 
-        override fun doInBackground(vararg params: NoteUI): Unit? {
+        val noteEntity = NoteEntity(
+            note.title,
+            note.description,
+            note.priority,
+            note.userID,
+            note.id
+        )
 
-            val noteEntity = NoteEntity(
-                params[0].title,
-                params[0].description,
-                params[0].priority,
-                params[0].userID,
-                params[0].id
-            )
 
-            noteDao.update(noteEntity)
 
-            return null
+        noteDao.delete(noteEntity)
 
-        }
+
     }
 
-    private class DeleteAllNotesAsyncTask(noteDaoNew: NoteDao) : AsyncTask<Unit, Unit, Unit>() {
+    suspend fun deleteAllNotes() {
 
-        private var noteDao: NoteDao = noteDaoNew
+        noteDao.deleteAll()
 
-        override fun doInBackground(vararg params: Unit): Unit? {
-
-            noteDao.deleteAll()
-
-            return null
-
-        }
     }
 
-    private class DeleteNoteAsyncTask(noteDaoNew: NoteDao) : AsyncTask<NoteUI, Unit, Unit>() {
+    fun getAllNotes(): Flow<List<NoteEntity>> {
 
-        private var noteDao: NoteDao = noteDaoNew
-
-        override fun doInBackground(vararg params: NoteUI): Unit? {
-
-            val noteEntity = NoteEntity(
-                params[0].title,
-                params[0].description,
-                params[0].priority,
-                params[0].userID,
-                params[0].id
-            )
-
-            noteDao.delete(noteEntity)
-
-            return null
-
-        }
+        return noteDao.getAllNotes(userId)
     }
 
 }
+
+
 

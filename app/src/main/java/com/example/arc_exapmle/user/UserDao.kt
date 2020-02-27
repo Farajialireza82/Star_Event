@@ -10,16 +10,17 @@ import androidx.room.Query
 interface UserDao {
 
     @Insert
-    fun insert(user: UserEntity)
+    suspend fun insert(user: UserEntity)
 
     @Delete
-    fun delete(user: UserEntity)
+    suspend fun delete(user: UserEntity)
 
     @Query("DELETE FROM user_table")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM user_table ")
     fun getAllUsers(): LiveData<List<UserEntity>>
+
 
     @Query("SELECT * FROM user_table WHERE user_id =:userId")
     fun findUserById(userId: Int): List<UserEntity>

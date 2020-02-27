@@ -3,28 +3,30 @@ package com.example.arc_exapmle.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.arc_exapmle.user.UserEntity
 import com.example.arc_exapmle.user.UserRepository
 import com.example.arc_exapmle.user.UserUI
+import kotlinx.coroutines.launch
 
 class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel() {
 
-      private var repository: UserRepository = userRepository
+    private var repository: UserRepository = userRepository
 
     var toastMutableLiveData: MutableLiveData<ViewModelDelivery> = MutableLiveData()
-      var usernameEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
-      var idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
+    var usernameEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
+    var idEditTextMutableLiveData: MutableLiveData<String> = MutableLiveData()
 
 
-
-
-    fun createNewAccount(username: String, numericId: String){
+    fun createNewAccount(username: String, numericId: String) {
 
         when {
 
-            username.trim() == "" -> usernameEditTextMutableLiveData.value = "This field cannot remain empty"
+            username.trim() == "" -> usernameEditTextMutableLiveData.value =
+                "This field cannot remain empty"
 
-            numericId.trim() == "" -> idEditTextMutableLiveData.value = "This field cannot remain empty"
+            numericId.trim() == "" -> idEditTextMutableLiveData.value =
+                "This field cannot remain empty"
 
             else -> {
 
@@ -36,15 +38,21 @@ class CreateAccountActivityViewModel(userRepository: UserRepository) : ViewModel
                         val newUserEntity =
                             UserEntity(username, numericId.toInt())
 
-                        repository.newUser(UserUI(newUserEntity.username, newUserEntity.user_id))
+                        viewModelScope.launch {
 
-
-                        toastMutableLiveData.value =
-                            ViewModelDelivery(
-                                "User Created Successfully . Log in again",
-                                "intent"
+                            repository.newUser(
+                                UserUI(
+                                    newUserEntity.username,
+                                    newUserEntity.user_id
+                                )
                             )
 
+                            toastMutableLiveData.value =
+                                ViewModelDelivery(
+                                    "User Created Successfully . Log in again",
+                                    "intent"
+                                )
+                        }
 
 
                     }

@@ -10,23 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.arc_exapmle.R
+import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.factory.AddNoteKtActivityViewModelFactory
-import com.example.arc_exapmle.note.NoteEntity
-import com.example.arc_exapmle.note.NoteViewModel
-import com.example.arc_exapmle.factory.NoteViewModelFactory
 import com.example.arc_exapmle.note.NoteRepository
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.AddNoteKtActivityViewModel
 
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class AddNoteKtActivity : AppCompatActivity() {
-
-    companion object {
-
-        const val EXTRA_NOTE = "com.example.arc_exapmle.EXTRA_NOTE"
-
-
-    }
 
     private lateinit var editTextTitle: EditText
     private lateinit var editTextDescription: EditText
@@ -41,7 +33,7 @@ class AddNoteKtActivity : AppCompatActivity() {
 
         val intent = intent
 
-        user = intent.getParcelableExtra(LoginActivity.loginValue)
+        user = intent.getParcelableExtra(LoginActivity2nd.loginValue)
 
         editTextTitle = findViewById(R.id.edit_text_Title)
         editTextDescription = findViewById(R.id.edit_text_description)
@@ -49,7 +41,8 @@ class AddNoteKtActivity : AppCompatActivity() {
 
         addNoteKtActivityViewModel = ViewModelProviders.of(
             this,
-            AddNoteKtActivityViewModelFactory(NoteRepository(application, user.user_id))
+            AddNoteKtActivityViewModelFactory(
+                NoteRepository(StarDatabase.getInstance(this).noteDao() , user.user_id))
         ).get(AddNoteKtActivityViewModel::class.java)
 
         numberPickerPriority!!.minValue = 1
@@ -65,13 +58,13 @@ class AddNoteKtActivity : AppCompatActivity() {
     private fun saveNote() {
 
 
-            val title = editTextTitle.text.toString()
+        val title = editTextTitle.text.toString()
 
-            val description = editTextDescription.text.toString()
+        val description = editTextDescription.text.toString()
 
-            val priority = numberPickerPriority!!.value
+        val priority = numberPickerPriority!!.value
 
-            addNoteKtActivityViewModel.addNote(title , description , priority)
+        addNoteKtActivityViewModel.addNote(title, description, priority)
 
 
     }
@@ -97,33 +90,29 @@ class AddNoteKtActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        addNoteKtActivityViewModel.titleMutableLiveData.observe(this , Observer {
+        addNoteKtActivityViewModel.titleMutableLiveData.observe(this, Observer {
 
             editTextTitle.error = it
 
         })
 
-        addNoteKtActivityViewModel.descriptionMutableLiveData.observe(this , Observer {
+        addNoteKtActivityViewModel.descriptionMutableLiveData.observe(this, Observer {
 
             editTextDescription.error = it
 
         })
 
-        addNoteKtActivityViewModel.toastMutableLiveData.observe(this , Observer {
+        addNoteKtActivityViewModel.toastMutableLiveData.observe(this, Observer {
 
-            Toast.makeText(this , it , Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
 
         })
 
-        addNoteKtActivityViewModel.onSuccessMutableLiveData.observe(this , Observer {
+        addNoteKtActivityViewModel.onSuccessMutableLiveData.observe(this, Observer {
 
-            if(it){
                 finish()
-            }
 
         })
-
-
 
 
     }

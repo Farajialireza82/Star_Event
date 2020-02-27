@@ -1,10 +1,7 @@
 package com.example.arc_exapmle.activity
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -12,18 +9,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.arc_exapmle.R
+import com.example.arc_exapmle.StarDatabase
 import com.example.arc_exapmle.factory.MainActivityViewModelFactory
-import com.example.arc_exapmle.factory.NoteViewModelFactory
 import com.example.arc_exapmle.note.*
 import com.example.arc_exapmle.user.UserUI
 import com.example.arc_exapmle.viewModel.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class MainActivity : AppCompatActivity() {
@@ -38,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var user: UserUI
 
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -53,11 +53,21 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        user = intent.getParcelableExtra(LoginActivity.loginValue)
+        user = intent.getParcelableExtra(LoginActivity2nd.loginValue)
 
-        val noteRepository = NoteRepository(application , user.user_id)
 
-        mainActivityViewModel = ViewModelProviders.of(this, MainActivityViewModelFactory(noteRepository)).get(MainActivityViewModel::class.java)
+        mainActivityViewModel =
+            ViewModelProviders.of(
+                this,
+                MainActivityViewModelFactory(
+                    NoteRepository(
+                        StarDatabase.getInstance(this).noteDao(),
+                        user.user_id
+                    )
+                )
+            )
+                .get(MainActivityViewModel::class.java)
+
 
 
 
@@ -69,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
             val addIntent = Intent(this, AddNoteKtActivity::class.java)
 
-            addIntent.putExtra(LoginActivity.loginValue, user)
+            addIntent.putExtra(LoginActivity2nd.loginValue, user)
 
             startActivity(addIntent)
 
@@ -97,7 +107,10 @@ class MainActivity : AppCompatActivity() {
             ) {
                 adapter.getNoteAt(viewHolder.adapterPosition)?.let {
 
+
                     mainActivityViewModel.deleteNote(it)
+
+
                 }
 
             }
@@ -106,78 +119,50 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+
+        mainActivityViewModel.toastMutableLiveData.observe(this, Observer {
+
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
+        )
+
+        mainActivityViewModel.getAllNotes()
+
+        mainActivityViewModel.noteUIListMutableLiveData.observe(this, Observer {
+
+            adapter.submitList(it)
+
+        })
+
+
+
+    }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val menuInflater = menuInflater
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
 
             R.id.delete_all_notes -> {
+
                 mainActivityViewModel.deleteAllNotes()
+
 
             }
         }
 
         return super.onOptionsItemSelected(item)
     }
-
-
-    override fun onResume() {
-        super.onResume()
-
-        mainActivityViewModel.allNotes.observe(this, Observer {
-
-            val noteUIList: MutableList<NoteUI> = ArrayList()
-
-
-
-            for (i in it!!.indices) {
-
-                val noteEntity = it[i]
-
-                noteUIList.add(
-                    NoteUI(
-                        noteEntity.noteId,
-                        noteEntity.title,
-                        noteEntity.description,
-                        noteEntity.priority,
-                        user.user_id
-                    )
-                )
-
-            }
-
-            adapter.setNote(noteUIList)
-
-
-        })
-
-        mainActivityViewModel.toastMutableLiveData.observe(this, Observer {
-
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-
-
-        })
-
-
-    }
-
-/*    override fun onBackPressed() {
-        super.onBackPressed()
-
-        val loginIntent = Intent(this , LoginActivity::class.java)
-
-        Log.i("onBackButtonPressed" , "should see loginIntent")
-
-        startActivity(loginIntent)
-
-    }*/
-
-
 
 
 }

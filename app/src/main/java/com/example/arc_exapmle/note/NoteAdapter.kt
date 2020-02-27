@@ -4,18 +4,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.arc_exapmle.R
 
-class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
+class NoteAdapter() :
+    ListAdapter<NoteUI, NoteAdapter.NoteHolder>(DIFF_CALLBACK) {
 
-    private var notes: List<NoteUI> = ArrayList()
+
+companion object {
+    val DIFF_CALLBACK: DiffUtil.ItemCallback<NoteUI> =
+        object : DiffUtil.ItemCallback<NoteUI>() {
+            override fun areItemsTheSame(oldItem: NoteUI, newItem: NoteUI): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: NoteUI, newItem: NoteUI): Boolean {
+                return oldItem == newItem
+            }
+        }
+}
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
 
         val itemView: View? = LayoutInflater.from(parent.context)
-            .inflate(R.layout.note_item, parent, false)
+            .inflate(R.layout.updated_viewholder, parent, false)
 
         return NoteHolder(itemView)
     }
@@ -23,7 +38,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
     override fun onBindViewHolder(holder: NoteHolder, position: Int) {
 
-        val currentNote: NoteUI? = notes[position]
+        val currentNote: NoteUI? = getItem(position)
 
         holder.textViewTitle.text = currentNote?.title
 
@@ -34,21 +49,10 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
     }
 
-    override fun getItemCount(): Int {
-
-        return notes.size
-
-    }
-
-    fun setNote(newNotes: List<NoteUI>) {
-
-        notes = newNotes
-        notifyDataSetChanged()
-    }
 
     fun getNoteAt(position: Int) : NoteUI?{
 
-        return notes[position]
+        return getItem(position)
 
     }
 
