@@ -1,9 +1,13 @@
 package com.example.arc_exapmle.viewModel
 
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.arc_exapmle.activity.LoginActivity2nd
+import com.example.arc_exapmle.activity.MainActivity
 import com.example.arc_exapmle.user.UserRepository
+import com.example.arc_exapmle.user.UserUI
 import java.lang.NumberFormatException
 
 class LoginActivityViewModel(userRepository: UserRepository) : ViewModel() {
@@ -56,6 +60,16 @@ class LoginActivityViewModel(userRepository: UserRepository) : ViewModel() {
 
 
         }
+
+    }
+
+    fun startMainActivity(mainIntent: Intent , value:String , viewModelDelivery: ViewModelDelivery){
+
+        mainIntent.putExtra(
+           value,
+            UserUI(viewModelDelivery.username, Integer.parseInt(viewModelDelivery.userId))
+        )
+
 
     }
 

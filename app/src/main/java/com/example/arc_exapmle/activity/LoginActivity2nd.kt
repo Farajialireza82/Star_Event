@@ -79,7 +79,7 @@ class LoginActivity2nd : AppCompatActivity() {
     }
 
     private fun loginOnClick() {
-        login_button.setOnClickListener { view ->
+        login_button.setOnClickListener {
             if (idEditText.text.isNotEmpty()) {
 
                 loginActivityViewModel.userEntry(idEditText.text.toString())
@@ -121,10 +121,7 @@ class LoginActivity2nd : AppCompatActivity() {
 
             val mainIntent = Intent(this, MainActivity::class.java)
 
-            mainIntent.putExtra(
-                loginValue,
-                UserUI(it.username, Integer.parseInt(it.userId))
-            )
+            loginActivityViewModel.startMainActivity(mainIntent , loginValue , it)
 
             startActivity(mainIntent)
 
